@@ -1,0 +1,33 @@
+# Build artifacts
+/build/
+
+# Binaries
+/springmass
+*.exe
+*.out
+
+# Object/dependency files
+*.o
+*.a
+*.so
+*.d
+
+# Debug/profiling
+*.gch
+vgcore.*
+*.prof
+*.gcda
+*.gcno
+*.gcov
+
+# Editor/OS junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Optional tooling output
+compile_commands.json
+
+# Other
+todo.md
