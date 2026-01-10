@@ -1,6 +1,8 @@
 #include <raylib.h>
 #include "sim.h"
-#include "core/consts.h"
+#include "../core/consts.h"
+#include "UI/ui.h"
+#include "UI/graph.h"
 
 void InitSim(SimState *sim)
 {
@@ -8,8 +10,11 @@ void InitSim(SimState *sim)
     InitSystem(&sim->systemState);
     InitRender(&sim->renderState);
     DrawRender(sim->renderState);
+    InitGraph();
     sim->isDragging = false;
     sim->dragGrabOffsetX = 0.0f;
+
+
 }
 
 bool ClickInBoundingBox(Rectangle box)
@@ -87,13 +92,15 @@ void UpdateSim(SimState *sim, float dt)
     sim->renderState.position.x = sim->systemState.x;
 }
 
-void DrawSim(SimState *sim)
+void DrawSim(SimState *sim, float time)
 {
     BeginDrawing();
     ClearBackground(BLACK); // Clear last frame
     DrawText("Spring-Mass System", 10, 10, 30, BLUE); // Title
+    DrawGraph(sim->systemState.x - sim->systemState.equilibrium, time);
     ShowUI(sim); // Draw UI
     UpdateRender(&sim->renderState); // Update render state based on system state
+    UpdateGraph(sim->systemState.x - sim->systemState.equilibrium, time);
     EndDrawing();
 }
 

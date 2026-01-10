@@ -16,12 +16,15 @@ int main()
     InitSim(&sim);
     SetTargetFPS(120);
 
+    float time = 0.0f;
+
     // Simulation loop
     while (SimRunning(&sim))
     {   
         float dt = GetFrameTime(); // Delta time
+        time += dt;
         UpdateSim(&sim, dt);
-        DrawSim(&sim);
+        DrawSim(&sim, time);
     }
     // Cleanup
     StopSim();

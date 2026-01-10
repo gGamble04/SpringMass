@@ -10,8 +10,9 @@ This project started as a hands-on follow-up to finishing differential equations
 - Interactive parameter sliders (spring constant *k*, mass *m*, damping *c*, restitution *e*)
 - Damping classification label (under/critical/overdamped via $c_{crit}=2\sqrt{km}$)
 - Click-and-drag the mass to set initial conditions
+- Graph of displacement over time
 
-![Example of Spring-Mass System](./readme_images/SpringMass.gif)
+![Example of Spring-Mass System](./readme_images/SpringMass2.gif)
 
 ## Build & Run
 

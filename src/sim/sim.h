@@ -10,7 +10,6 @@
 
 #include "core/physics.h"
 #include "renderer/renderer.h"
-#include "UI/ui.h"
 
 /** 
  * @struct SimState
@@ -64,7 +63,7 @@ void UpdateSim(SimState *sim, float dt);
  * @brief Draws the current state of the simulation.
  * @param sim Pointer to the SimState.
  */
-void DrawSim(SimState *sim);
+void DrawSim(SimState *sim, float time);
 /**
  * @brief Checks if the simulation is currently running.
  * @param sim Pointer to the SimState.
