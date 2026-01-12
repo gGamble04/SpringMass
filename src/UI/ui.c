@@ -9,7 +9,7 @@ void DrawVariableSliders(SpringMassSystemState *state)
     const float k_min = 0.0f;
     const float k_max = 500.0f;
 
-    const float m_min = 0.0f;
+    const float m_min = 0.1f;
     const float m_max = 500.0f;
 
     const float c_min = 0.0f;

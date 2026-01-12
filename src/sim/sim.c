@@ -2,7 +2,7 @@
 #include "sim.h"
 #include "../core/consts.h"
 #include "UI/ui.h"
-#include "UI/graph.h"
+#include "renderer/graph.h"
 
 void InitSim(SimState *sim)
 {
