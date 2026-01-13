@@ -18,6 +18,8 @@
 typedef struct SimState {
 	SpringMassSystemState systemState; /**< Physical state of the spring-mass system */
 	SpringMassRenderState renderState; /**< Rendering state of the spring-mass system */
+	bool isPaused;
+	float pausedTime; /**< The simulation time when paused (used to freeze graph) */
 	bool isDragging; /**< Indicates if the mass is currently being dragged */
 	float dragGrabOffsetX; /**< Horizontal offset from the grab point during dragging */
 } SimState;
@@ -29,41 +31,16 @@ typedef struct SimState {
 void InitSim(SimState *simulation);
 
 /**
- * @brief Checks if a mouse click is within a given bounding box.
- * @param box The bounding box to check against.
- * @return true if the click is within the box, false otherwise.
- */
-bool ClickInBoundingBox(Rectangle box);
-
-/**
- * @brief Handles dragging interaction for the mass in the simulation.
- * @param sim Pointer to the SimState.
- * @return true if dragging is occurring, false otherwise.
- */
-bool SimHandleDragging(SimState *sim);
-
-/**
- * @brief Resolves boundary conditions for the spring-mass system.
- * @param sim Pointer to the SimState.
- */
-void SimResolveBounds(SimState *sim);
-
-/**
- * @brief Displays the user interface for adjusting simulation parameters.
- * @param sim Pointer to the SimState.
- */
-void ShowUI(SimState *sim);
-/**
  * @brief Updates the simulation state based on elapsed time.
  * @param sim Pointer to the SimState.
  * @param dt Time delta since the last update.
  */
-void UpdateSim(SimState *sim, float dt);
+void UpdateSim(SimState *sim, float dt, float time);
 /**
  * @brief Draws the current state of the simulation.
  * @param sim Pointer to the SimState.
  */
-void DrawSim(SimState *sim, float time);
+void DrawSim(SimState *sim, float dt, float time);
 /**
  * @brief Checks if the simulation is currently running.
  * @param sim Pointer to the SimState.

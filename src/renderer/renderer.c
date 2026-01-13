@@ -1,9 +1,15 @@
 #include "renderer/renderer.h"
 #include "core/consts.h"
+#include "math.h"
 
+static float elapsedTime = 0.0f;
+
+// TODO: Why is the position a rectangle? Should be a Vector2 only??!
 void InitRender(SpringMassRenderState *state)
 {
     state->position = (Rectangle){ 150, FLOOR_HEIGHT - RECT_SIZE - FLOOR_THICKNESS / 2, RECT_SIZE, RECT_SIZE }; // Initial position of the mass
+    state->massColor = RED; // Color of the mass rectangle
+    state->theme = BLUE; // Theme color
     state->springAnchorPoint = (Vector2){ 0, state->position.y + RECT_SIZE / 2 }; // Fixed anchor point of the spring
     state->springAttachPoint = (Vector2){ state->position.x, state->position.y + RECT_SIZE / 2 }; // Attachment point of the spring on the mass
     state->numSpringSegments = SPRING_SEGMENTS; // Number of segments in the spring
@@ -11,6 +17,57 @@ void InitRender(SpringMassRenderState *state)
     state->floorStart = (Vector2){ 0, FLOOR_HEIGHT }; // Start point of the floor line
     state->floorEnd = (Vector2){ WIDTH, FLOOR_HEIGHT}; // End point of the floor line
     state->floorThickness = FLOOR_THICKNESS; // Thickness of the floor line
+}
+
+void ShowStartupText()
+{
+    const char *text1 = "Welcome to the Spring-Mass Simulation!";
+    int fontSize1 = 20;
+    int textWidth1 = MeasureText(text1, fontSize1);
+    DrawText(text1, WIDTH / 2 - textWidth1 / 2, HEIGHT / 2 - 100, fontSize1, RAYWHITE);
+
+    const char *text2 = "Click and drag to move the mass";
+    int fontSize2 = 15;
+    int textWidth2 = MeasureText(text2, fontSize2);
+    DrawText(text2, WIDTH / 2 - textWidth2 / 2, HEIGHT / 2 - 80, fontSize2, RAYWHITE);
+
+    const char *text3 = "Edits parameters with sliders in top right";
+    int fontSize3 = 15;
+    int textWidth3 = MeasureText(text3, fontSize3);
+    DrawText(text3, WIDTH / 2 - textWidth3 / 2, HEIGHT / 2 - 60, fontSize3, RAYWHITE);
+
+    const char *text4 = "ESC to pause";
+    int fontSize4 = 15;
+    int textWidth4 = MeasureText(text4, fontSize4);
+    DrawText(text4, WIDTH / 2 - textWidth4 / 2, HEIGHT / 2 - 40, fontSize4, RAYWHITE);
+}
+
+void ShowStartupTextFadeOut(float dt, float fadeTime)
+{
+    elapsedTime += dt;
+    float cosValue = cos((PI / (2.0f * fadeTime)) * elapsedTime); // 1.0 to 0.0 (smooth): cos( π/(2a) * x ), a = fadeTime, x = elapsedTime
+    if (cosValue < 0.0f) cosValue = 0.0f; // Clamp to 0
+    int alpha = (int)(cosValue * 255.0f); // Map 0-1 to 0-255
+
+    const char *text1 = "Welcome to the Spring-Mass Simulation!";
+    int fontSize1 = 20;
+    int textWidth1 = MeasureText(text1, fontSize1);
+    DrawText(text1, WIDTH / 2 - textWidth1 / 2, HEIGHT / 2 - 100, fontSize1, (Color){ 245, 245, 245, alpha});
+
+    const char *text2 = "Click and drag to move the mass";
+    int fontSize2 = 15;
+    int textWidth2 = MeasureText(text2, fontSize2);
+    DrawText(text2, WIDTH / 2 - textWidth2 / 2, HEIGHT / 2 - 80, fontSize2, (Color){ 245, 245, 245, alpha});
+
+    const char *text3 = "Edits parameters with sliders in top right";
+    int fontSize3 = 15;
+    int textWidth3 = MeasureText(text3, fontSize3);
+    DrawText(text3, WIDTH / 2 - textWidth3 / 2, HEIGHT / 2 - 60, fontSize3, (Color){ 245, 245, 245, alpha});
+
+    const char *text4 = "ESC to pause";
+    int fontSize4 = 15;
+    int textWidth4 = MeasureText(text4, fontSize4);
+    DrawText(text4, WIDTH / 2 - textWidth4 / 2, HEIGHT / 2 - 40, fontSize4, (Color){ 245, 245, 245, alpha});
 }
 
 void DrawFloor(SpringMassRenderState state)
@@ -21,7 +78,7 @@ void DrawFloor(SpringMassRenderState state)
 
 void DrawMass(SpringMassRenderState state)
 {
-    DrawRectangleRec(state.position, RED); // Draw the mass rectangle
+    DrawRectangleRec(state.position, state.massColor); // Draw the mass rectangle
 }
 
 void DrawSpring(SpringMassRenderState state)
@@ -87,7 +144,6 @@ void DrawRender(SpringMassRenderState state)
     DrawMass(state);
     DrawSpring(state);
 }
-
 
 void UpdateRender(SpringMassRenderState *state)
 {   

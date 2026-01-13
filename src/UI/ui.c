@@ -48,7 +48,7 @@ void DrawVariableSliders(SpringMassSystemState *state)
     GuiSetStyle(LABEL, TEXT_COLOR_NORMAL, ColorToInt(GRAY));
 }
 
-void ShowDamping(float c, float k, float m, int x, int y)
+void ShowDamping(float c, float k, float m)
 {
     // For a mass-spring-damper system, the critical damping coefficient is:
     //   c_crit = 2 * sqrt(k * m)
@@ -70,5 +70,49 @@ void ShowDamping(float c, float k, float m, int x, int y)
         "Critically damped";
 
     const int fontSize = 20;
-    DrawText(dampingType, x, y, fontSize, RED);
+    DrawText(dampingType, UI_SLIDER_X, UI_SLIDER_Y + 7 * UI_SLIDER_HEIGHT + 5, fontSize, BLUE);
+}
+
+int ShowPauseDialog()
+{
+    float screenWidth = GetScreenWidth();
+    float screenHeight = GetScreenHeight();
+    
+    float dialogWidth = screenWidth / 2;
+    float dialogHeight = screenHeight / 2;
+
+    float x = (screenWidth / 2) - (dialogWidth / 2);
+    float y = (screenHeight / 2) - (dialogHeight / 2);
+
+    Rectangle bounds = { x, y, dialogWidth, dialogHeight };
+    Rectangle clearRect = { x, y, dialogWidth, dialogHeight };
+
+    DrawRectangleRec(clearRect, BLACK);
+    GuiGroupBox(bounds, NULL);
+
+    const char *text = "Paused";
+    int fontSize = 20;
+    int textWidth = MeasureText(text, fontSize);
+
+    DrawText(text, x + (dialogWidth / 2) - (textWidth / 2), y + 10, fontSize, GRAY);
+    
+    // Add buttons inside the group box
+    float buttonWidth = 150;
+    float buttonHeight = 40;
+    float buttonX = x + (dialogWidth - buttonWidth) / 2;
+    float buttonY = y + dialogHeight / 2;
+    
+    Rectangle buttonBounds = { buttonX, buttonY, buttonWidth, buttonHeight };
+    
+    if (GuiButton(buttonBounds, "Resume"))
+    {
+        return 0;
+    }
+
+    return 1;
+}
+
+static void DrawPauseButtons()
+{
+    
 }

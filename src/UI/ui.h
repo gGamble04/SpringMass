@@ -24,6 +24,10 @@ void DrawVariableSliders(SpringMassSystemState *state);
  * @param x X position to draw the text.
  * @param y Y position to draw the text.
  */
-void ShowDamping(float c, float k, float m, int x, int y);
+void ShowDamping(float c, float k, float m);
+
+int ShowPauseDialog();
+
+static void DrawPauseButtons();
 
 #endif

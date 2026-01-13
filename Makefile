@@ -8,8 +8,8 @@ SRC := \
 	src/sim/sim.c \
 	src/core/physics.c \
 	src/renderer/renderer.c \
-	src/UI/ui.c \
-	src/UI/graph.c
+	src/renderer/graph.c \
+	src/UI/ui.c
 
 OBJ := $(patsubst src/%.c,build/%.o,$(SRC))
 DEP := $(OBJ:.o=.d)

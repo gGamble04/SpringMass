@@ -19,6 +19,8 @@
  * 
  * Rectangle position: Position and size of the mass rectangle.
  * 
+ * Color color: Color of the mass rectangle.
+ * 
  * Vector2 springAnchorPoint: Fixed anchor point of the spring.
  * 
  * Vector2 springAttachPoint: Attachment point of the spring on the mass.
@@ -35,6 +37,8 @@
  */
 typedef struct SpringMassRenderState {
     Rectangle position; /**< Position and size of the mass rectangle */
+    Color massColor; /**< Color of the mass rectangle */
+    Color theme; /**< Theme color */
     Vector2 springAnchorPoint; /**< Fixed anchor point of the spring */
     Vector2 springAttachPoint; /**< Attachment point of the spring on the mass */
     int numSpringSegments; /**< Number of segments in the spring */
@@ -92,26 +96,36 @@ static inline double vec2Length(Vector2 v)
  * @param state Pointer to the SpringMassRenderState to initialize.
  */
 void InitRender(SpringMassRenderState *state);
+
+
+void ShowStartupText();
+
+void ShowStartupTextFadeOut(float dt, float fadeTime);
+
 /**
  * @brief Draw the floor in the spring-mass system.
  * @param state Current rendering state.
  */
 void DrawFloor(SpringMassRenderState state);
+
 /**
  * @brief Draw the mass in the spring-mass system.
  * @param state Current rendering state.
  */
 void DrawMass(SpringMassRenderState state);
+
 /**
  * @brief Draw the spring in the spring-mass system.
  * @param state Current rendering state.
  */
 void DrawSpring(SpringMassRenderState state);
+
 /**
  * @brief Draw the entire spring-mass system.
  * @param state Current rendering state.
  */
 void DrawRender(SpringMassRenderState state);
+
 /**
  * @brief Update the rendering state for the spring-mass system.
  * @param state Pointer to the SpringMassRenderState to update.

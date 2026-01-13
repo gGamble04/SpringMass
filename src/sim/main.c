@@ -16,15 +16,20 @@ int main()
     InitSim(&sim);
     SetTargetFPS(120);
 
-    float time = 0.0f;
+    float elapsedTime = 0.0f; // Track total simulation time
+    // float becomes imprecise after ~4.5 hours, so this is safe.
+    // Double becomes imprecise after ~34,000 years, but lets be honest, no ones using this for more that 4 hours.
 
     // Simulation loop
     while (SimRunning(&sim))
     {   
         float dt = GetFrameTime(); // Delta time
-        time += dt;
-        UpdateSim(&sim, dt);
-        DrawSim(&sim, time);
+        if (!sim.isPaused)
+        {
+            elapsedTime += dt; // Only update total elapsed time if not paused
+        }
+        UpdateSim(&sim, dt, elapsedTime);
+        DrawSim(&sim, dt, elapsedTime);
     }
     // Cleanup
     StopSim();

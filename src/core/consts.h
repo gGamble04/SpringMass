@@ -3,6 +3,8 @@
 
 // Project-wide constants
 
+// #define PI 3.14159265358979323846
+
 #define WIDTH 900 // Window width
 #define HEIGHT 600 // Window height
 
