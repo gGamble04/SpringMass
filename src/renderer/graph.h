@@ -20,7 +20,7 @@ void UpdateGraph(float displacement, float time);
  * @param displacement The current displacement value.
  * @param time The current time value.
  */
-void DrawGraph(float displacement, float time);
+void DrawGraph(float displacement, float time, Color themeColor);
 
 /**
  * @brief Close the graph window.

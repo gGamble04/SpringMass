@@ -59,7 +59,7 @@ void UpdateGraph(float displacement, float time) {
     if (time > maxTime) maxTime = time;
 }
 
-void DrawGraph(float displacement, float time) {
+void DrawGraph(float displacement, float time, Color themeColor) {
     // All drawing is offset to start at (WIDTH+1, 0)
     int offsetX = GRAPH_X;
     int offsetY = GRAPH_Y;
@@ -93,9 +93,18 @@ void DrawGraph(float displacement, float time) {
         if (displacementRange >= 0.1f) {
             // Calculate y position for displacement = 0
             float equilibriumY = offsetY + GRAPH_HEIGHT - MARGIN - ((0.0f - minDisplacement) / displacementRange) * graphHeight;
+            
+            // Create a lighter version of theme color by blending with white
+            Color lighterTheme = {
+                themeColor.r + (255 - themeColor.r) * 0.5f,
+                themeColor.g + (255 - themeColor.g) * 0.5f,
+                themeColor.b + (255 - themeColor.b) * 0.5f,
+                themeColor.a
+            };
+            
             DrawLineEx((Vector2){offsetX + MARGIN, equilibriumY}, 
                       (Vector2){offsetX + GRAPH_WIDTH - MARGIN, equilibriumY}, 
-                      2.0f, SKYBLUE);
+                      2.0f, lighterTheme);
         }
     }
     
@@ -122,7 +131,7 @@ void DrawGraph(float displacement, float time) {
             float y1 = offsetY + GRAPH_HEIGHT - MARGIN - ((dataPoints[i].y - minDisplacement) / displacementRange) * graphHeight;
             float y2 = offsetY + GRAPH_HEIGHT - MARGIN - ((dataPoints[i + 1].y - minDisplacement) / displacementRange) * graphHeight;
             
-            DrawLineEx((Vector2){x1, y1}, (Vector2){x2, y2}, 2.0f, BLUE);
+            DrawLineEx((Vector2){x1, y1}, (Vector2){x2, y2}, 2.0f, themeColor);
         }
         
         // Draw current point
@@ -132,7 +141,7 @@ void DrawGraph(float displacement, float time) {
     }
     
     // Draw current values
-    DrawText(TextFormat("Current Displacement: %.2f", displacement), offsetX + GRAPH_WIDTH - 545, offsetY + MARGIN - 25, 15, BLUE);
+    DrawText(TextFormat("Current Displacement: %.2f", displacement), offsetX + GRAPH_WIDTH - 545, offsetY + MARGIN - 25, 15, themeColor);
     
     // Draw min/max labels
     DrawText(TextFormat("%.2f", maxDisplacement), offsetX + 5, offsetY + MARGIN, 12, GRAY);

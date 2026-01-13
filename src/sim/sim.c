@@ -50,7 +50,7 @@ void DrawSim(SimState *sim, float dt, float time)
 {
     BeginDrawing();
         ClearBackground(BLACK); // Clear last frame
-        DrawGraph(sim->systemState.x - sim->systemState.equilibrium, time);
+        DrawGraph(sim->systemState.x - sim->systemState.equilibrium, time, sim->renderState.themeColor);
         ShowUI(sim); // Draw UI
         UpdateRender(&sim->renderState); // Update render state based on system state
         
