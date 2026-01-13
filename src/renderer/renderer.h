@@ -17,7 +17,7 @@
  * 
  * Members:
  * 
- * Rectangle position: Position and size of the mass rectangle.
+ * Rectangle massRectangle: Position and size of the mass rectangle.
  * 
  * Color color: Color of the mass rectangle.
  * 
@@ -36,16 +36,21 @@
  * int floorThickness: Thickness of the floor line.
  */
 typedef struct SpringMassRenderState {
-    Rectangle position; /**< Position and size of the mass rectangle */
+    Rectangle massRectangle; /**< Position and size of the mass rectangle */
     Color massColor; /**< Color of the mass rectangle */
+
     Color themeColor;
+    
     Vector2 springAnchorPoint; /**< Fixed anchor point of the spring */
     Vector2 springAttachPoint; /**< Attachment point of the spring on the mass */
     int numSpringSegments; /**< Number of segments in the spring */
     float segmentLength; /**< Length of each spring segment */
+    
     Vector2 floorStart; /**< Start point of the floor line */
     Vector2 floorEnd; /**< End point of the floor line */
     int floorThickness; /**< Thickness of the floor line */
+
+    float elapsedTime;
 } SpringMassRenderState;
 
 /**

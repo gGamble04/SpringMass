@@ -29,10 +29,34 @@ void DrawVariableSliders(SpringMassSystemState *systemState);
  */
 void ShowDamping(float c, float k, float m, Color themeColor);
 
+/**
+ * @brief Displays the pause dialog with options.
+ * @return An integer indicating the selected option:
+ *         
+ *  1 - Resume
+ *
+ *  2 - Settings
+ * 
+ *  3 - Exit
+ * 
+ * -1 - No selection
+ */
 int ShowPauseDialog();
 
+/**
+ * @brief Displays the settings dialog with options.
+ * @return An integer indicating the selected option:
+ *         
+ *  2 - Change Theme
+ * 
+ * -1 - No selection
+ */
 int ShowSettings();
 
+/**
+ * @brief Displays the theme change dialog with color options.
+ * @param state Pointer to the SpringMassRenderState to modify.
+ */
 void ShowThemeChange(SpringMassRenderState *state);
 
 #endif

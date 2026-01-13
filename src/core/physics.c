@@ -1,13 +1,20 @@
+/**
+ * @file physics.c
+ * @brief Implementation of the Spring-Mass System Physics.
+ * @author Gabe G.
+ * @date 1-13-2026
+ */
+
 #include "core/physics.h"
 
 void InitSystem(SpringMassSystemState *state)
 {
-	state->x = 150;					// Horizontal position       (x)
-	state->velocity = 0.0f;			// Velocity                  (v)
-	state->springConst = 100.0f;	// Spring constant           (k)
-	state->mass = 5.0f;				// Mass                      (m)
-	state->damping = 4.0f;			// Damping coefficient       (c)
-	state->equilibrium = state->x;	// Equilibrium/rest point    (x_eq)
+	state->x = 150;					// Horizontal position        (x)
+	state->velocity = 0.0f;			// Velocity                   (v)
+	state->springConst = 100.0f;	// Spring constant            (k)
+	state->mass = 5.0f;				// Mass                       (m)
+	state->damping = 4.0f;			// Damping coefficient        (c)
+	state->equilibrium = state->x;	// Equilibrium/rest point     (x_eq)
 	state->restitution = 0.1f;		// Coefficient of restitution (e)
 }
 

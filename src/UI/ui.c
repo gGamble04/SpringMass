@@ -1,3 +1,10 @@
+/**
+ * @file ui.c
+ * @brief Implementation of the User Interface for the Spring-Mass System Simulation.
+ * @author Gabe G.
+ * @date 1-13-2026
+ */
+
 #define RAYGUI_IMPLEMENTATION
 #include "UI/ui.h"
 #include "core/consts.h"

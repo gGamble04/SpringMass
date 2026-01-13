@@ -1,3 +1,10 @@
+/**
+ * @file consts.h
+ * @brief Project-wide constants for the Spring-Mass System Simulation.
+ * @author Gabe G.
+ * @date 1-9-2026
+ */
+
 #ifndef CONSTS_H
 #define CONSTS_H
 

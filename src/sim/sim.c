@@ -1,3 +1,10 @@
+/**
+ * @file sim.c
+ * @brief Implementation of the Spring-Mass System Simulation.
+ * @author Gabe G.
+ * @date 1-13-2026
+ */
+
 #include <raylib.h>
 #include "sim.h"
 #include "../core/consts.h"
@@ -21,26 +28,29 @@ void InitSim(SimState *sim)
     sim->isPaused = false;
     sim->pausedTime = 0.0f;
     sim->showSettings = false;
+    sim->showThemeChange = false;
     sim->isDragging = false;
     sim->dragGrabOffsetX = 0.0f;
 }
 
 void UpdateSim(SimState *sim, float dt, float time)
 {
-    if (IsKeyPressed(KEY_ESCAPE))
+    if (IsKeyPressed(KEY_ESCAPE)) 
     {
+        // Toggle pause on ESC key
         sim->isPaused = !sim->isPaused;
     }
     if (!sim->isPaused && 
         !sim->showSettings && 
         !sim->showThemeChange)
     {
+        // Only update physics when not paused or in a dialog
         if (!SimHandleDragging(sim)) 
         {
             SpringmassStep(&sim->systemState, dt);
         }
         SimResolveBounds(sim);
-        sim->renderState.position.x = sim->systemState.x;
+        sim->renderState.massRectangle.x = sim->systemState.x;
 
         UpdateGraph(sim->systemState.x - sim->systemState.equilibrium, time);
     }
@@ -54,8 +64,8 @@ void DrawSim(SimState *sim, float dt, float time)
         ShowUI(sim); // Draw UI
         UpdateRender(&sim->renderState); // Update render state based on system state
         
-        float textPersistTime = 8.0f;
-        float fadeTime = 7.0f;
+        float textPersistTime = 8.0f; // Time to show startup text before fading (seconds)
+        float fadeTime = 7.0f; // Duration of fade-out animation (seconds)
         if (time <= textPersistTime)
         {
             ShowStartupText(&sim->renderState);
@@ -66,6 +76,7 @@ void DrawSim(SimState *sim, float dt, float time)
             ShowStartupTextFadeOut(&sim->renderState, sim->isPaused ? 0.0f : dt, fadeTime);
         }
 
+        // Logic for handling dialogs
         if (sim->isPaused)
         {
             switch (ShowPauseDialog())
@@ -77,7 +88,7 @@ void DrawSim(SimState *sim, float dt, float time)
                     break;
                 case 2: // Open Settings
                     sim->showSettings = true;
-                    sim->isPaused = false; // Ensure that pause adn settings dialog arent trying to draw in the same frame
+                    sim->isPaused = false; // Ensure that pause and settings dialog aren't trying to draw in the same frame
                     break;
                 case 3: // Exit
                     sim->isRunning = false;
@@ -97,6 +108,7 @@ void DrawSim(SimState *sim, float dt, float time)
         {
             ShowThemeChange(&sim->renderState);
         }
+        // End of dialog handling logic
     EndDrawing();
 }
 
@@ -133,7 +145,7 @@ static bool SimHandleDragging(SimState *sim)
 {
     if (!sim->isDragging) 
     {
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ClickInBoundingBox(sim->renderState.position)) 
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ClickInBoundingBox(sim->renderState.massRectangle)) 
         {
             Vector2 mousePosition = GetMousePosition();
             sim->isDragging = true;
