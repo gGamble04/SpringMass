@@ -18,10 +18,14 @@
 typedef struct SimState {
 	SpringMassSystemState systemState; /**< Physical state of the spring-mass system */
 	SpringMassRenderState renderState; /**< Rendering state of the spring-mass system */
+	bool isRunning;
 	bool isPaused;
 	float pausedTime; /**< The simulation time when paused (used to freeze graph) */
+	bool showSettings;
+	bool showThemeChange;
 	bool isDragging; /**< Indicates if the mass is currently being dragged */
 	float dragGrabOffsetX; /**< Horizontal offset from the grab point during dragging */
+
 } SimState;
 
 /**

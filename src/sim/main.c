@@ -24,7 +24,9 @@ int main()
     while (SimRunning(&sim))
     {   
         float dt = GetFrameTime(); // Delta time
-        if (!sim.isPaused)
+        if (!sim.isPaused && 
+            !sim.showSettings && 
+            !sim.showThemeChange)
         {
             elapsedTime += dt; // Only update total elapsed time if not paused
         }

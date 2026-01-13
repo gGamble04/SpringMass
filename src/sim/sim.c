@@ -17,8 +17,10 @@ void InitSim(SimState *sim)
     InitSystem(&sim->systemState);
     InitRender(&sim->renderState);
     InitGraph();
+    sim->isRunning = true;
     sim->isPaused = false;
     sim->pausedTime = 0.0f;
+    sim->showSettings = false;
     sim->isDragging = false;
     sim->dragGrabOffsetX = 0.0f;
 }
@@ -29,7 +31,9 @@ void UpdateSim(SimState *sim, float dt, float time)
     {
         sim->isPaused = !sim->isPaused;
     }
-    if (!sim->isPaused)
+    if (!sim->isPaused && 
+        !sim->showSettings && 
+        !sim->showThemeChange)
     {
         if (!SimHandleDragging(sim)) 
         {
@@ -46,7 +50,6 @@ void DrawSim(SimState *sim, float dt, float time)
 {
     BeginDrawing();
         ClearBackground(BLACK); // Clear last frame
-        DrawText("Spring-Mass System", 10, 10, 30, BLUE); // Title
         DrawGraph(sim->systemState.x - sim->systemState.equilibrium, time);
         ShowUI(sim); // Draw UI
         UpdateRender(&sim->renderState); // Update render state based on system state
@@ -55,32 +58,51 @@ void DrawSim(SimState *sim, float dt, float time)
         float fadeTime = 7.0f;
         if (time <= textPersistTime)
         {
-            ShowStartupText();
+            ShowStartupText(&sim->renderState);
         }
         else if (textPersistTime < time && time <= textPersistTime + fadeTime)
         {
             // Only update fade-out animation when not paused
-            ShowStartupTextFadeOut(sim->isPaused ? 0.0f : dt, fadeTime);
+            ShowStartupTextFadeOut(&sim->renderState, sim->isPaused ? 0.0f : dt, fadeTime);
         }
 
         if (sim->isPaused)
         {
-            if (!ShowPauseDialog())
+            switch (ShowPauseDialog())
             {
-                sim->isPaused = !sim->isPaused;
+                case 0: // Resume
+                    sim->isPaused = false;
+                    sim->showSettings = false;
+                    sim->showThemeChange = false; 
+                    break;
+                case 1: // Open Settings
+                    sim->showSettings = true;
+                    sim->isPaused = false; // Ensure that pause adn settings dialog arent trying to draw in the same frame
+                    break;
+                case 2: // Exit
+                    sim->isRunning = false;
+                    break;
             }
+        }
+        else if (sim->showSettings)
+        {
+            switch (ShowSettings())
+            {
+                case 1:
+                    sim->showThemeChange = true;
+                    sim->showSettings = false;
+            }
+        }
+        else if (sim->showThemeChange)
+        {
+            ShowThemeChange(&sim->renderState);
         }
     EndDrawing();
 }
 
 bool SimRunning(const SimState *sim)
 {
-    (void)sim;
-    return !WindowShouldClose();
-    // Future: 
-    //  If required, lose the void and return
-    //  sim->IsRunning && !WindowShouldClose 
-    //  or whatever.
+    return !WindowShouldClose() && sim->isRunning;
 }
 
 void StopSim()
@@ -150,11 +172,13 @@ static void SimResolveBounds(SimState *sim)
 
 // Draw the UI elements
 static void ShowUI(SimState *sim)
-{
+{ 
+    SetThemeColor(sim->renderState.themeColor);
     DrawVariableSliders(&sim->systemState);
     ShowDamping(
         sim->systemState.damping,
         sim->systemState.springConst,
-        sim->systemState.mass
+        sim->systemState.mass,
+        sim->renderState.themeColor
     );
 }

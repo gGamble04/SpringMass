@@ -9,12 +9,15 @@
 #define UI_H
 
 #include "core/physics.h"
+#include "renderer/renderer.h"
+
+void SetThemeColor(Color themeColor);
 
 /**
  * @brief Draws sliders for adjusting the spring-mass system parameters.
  * @param state Pointer to the SpringMassSystemState to modify.
  */
-void DrawVariableSliders(SpringMassSystemState *state);
+void DrawVariableSliders(SpringMassSystemState *systemState);
 
 /**
  * @brief Displays the damping type based on current parameters.
@@ -24,10 +27,12 @@ void DrawVariableSliders(SpringMassSystemState *state);
  * @param x X position to draw the text.
  * @param y Y position to draw the text.
  */
-void ShowDamping(float c, float k, float m);
+void ShowDamping(float c, float k, float m, Color themeColor);
 
 int ShowPauseDialog();
 
-static void DrawPauseButtons();
+int ShowSettings();
+
+void ShowThemeChange(SpringMassRenderState *state);
 
 #endif

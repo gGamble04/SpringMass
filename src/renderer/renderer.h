@@ -38,7 +38,7 @@
 typedef struct SpringMassRenderState {
     Rectangle position; /**< Position and size of the mass rectangle */
     Color massColor; /**< Color of the mass rectangle */
-    Color theme; /**< Theme color */
+    Color themeColor;
     Vector2 springAnchorPoint; /**< Fixed anchor point of the spring */
     Vector2 springAttachPoint; /**< Attachment point of the spring on the mass */
     int numSpringSegments; /**< Number of segments in the spring */
@@ -97,10 +97,9 @@ static inline double vec2Length(Vector2 v)
  */
 void InitRender(SpringMassRenderState *state);
 
+void ShowStartupText(SpringMassRenderState *state);
 
-void ShowStartupText();
-
-void ShowStartupTextFadeOut(float dt, float fadeTime);
+void ShowStartupTextFadeOut(SpringMassRenderState *state, float dt, float fadeTime);
 
 /**
  * @brief Draw the floor in the spring-mass system.

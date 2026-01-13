@@ -9,7 +9,7 @@ void InitRender(SpringMassRenderState *state)
 {
     state->position = (Rectangle){ 150, FLOOR_HEIGHT - RECT_SIZE - FLOOR_THICKNESS / 2, RECT_SIZE, RECT_SIZE }; // Initial position of the mass
     state->massColor = RED; // Color of the mass rectangle
-    state->theme = BLUE; // Theme color
+    state->themeColor = BLUE;
     state->springAnchorPoint = (Vector2){ 0, state->position.y + RECT_SIZE / 2 }; // Fixed anchor point of the spring
     state->springAttachPoint = (Vector2){ state->position.x, state->position.y + RECT_SIZE / 2 }; // Attachment point of the spring on the mass
     state->numSpringSegments = SPRING_SEGMENTS; // Number of segments in the spring
@@ -19,8 +19,10 @@ void InitRender(SpringMassRenderState *state)
     state->floorThickness = FLOOR_THICKNESS; // Thickness of the floor line
 }
 
-void ShowStartupText()
+void ShowStartupText(SpringMassRenderState *state)
 {
+    DrawText("Spring-Mass System", 10, 10, 30, state->themeColor); // Title 
+
     const char *text1 = "Welcome to the Spring-Mass Simulation!";
     int fontSize1 = 20;
     int textWidth1 = MeasureText(text1, fontSize1);
@@ -42,12 +44,16 @@ void ShowStartupText()
     DrawText(text4, WIDTH / 2 - textWidth4 / 2, HEIGHT / 2 - 40, fontSize4, RAYWHITE);
 }
 
-void ShowStartupTextFadeOut(float dt, float fadeTime)
+void ShowStartupTextFadeOut(SpringMassRenderState *state, float dt, float fadeTime)
 {
     elapsedTime += dt;
     float cosValue = cos((PI / (2.0f * fadeTime)) * elapsedTime); // 1.0 to 0.0 (smooth): cos( π/(2a) * x ), a = fadeTime, x = elapsedTime
     if (cosValue < 0.0f) cosValue = 0.0f; // Clamp to 0
     int alpha = (int)(cosValue * 255.0f); // Map 0-1 to 0-255
+
+    Color color = state->themeColor;
+    color.a = alpha;
+    DrawText("Spring-Mass System", 10, 10, 30, color); // Title 
 
     const char *text1 = "Welcome to the Spring-Mass Simulation!";
     int fontSize1 = 20;
