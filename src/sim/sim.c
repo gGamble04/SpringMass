@@ -70,16 +70,16 @@ void DrawSim(SimState *sim, float dt, float time)
         {
             switch (ShowPauseDialog())
             {
-                case 0: // Resume
+                case 1: // Resume
                     sim->isPaused = false;
                     sim->showSettings = false;
                     sim->showThemeChange = false; 
                     break;
-                case 1: // Open Settings
+                case 2: // Open Settings
                     sim->showSettings = true;
                     sim->isPaused = false; // Ensure that pause adn settings dialog arent trying to draw in the same frame
                     break;
-                case 2: // Exit
+                case 3: // Exit
                     sim->isRunning = false;
                     break;
             }
@@ -88,7 +88,7 @@ void DrawSim(SimState *sim, float dt, float time)
         {
             switch (ShowSettings())
             {
-                case 1:
+                case 2:
                     sim->showThemeChange = true;
                     sim->showSettings = false;
             }

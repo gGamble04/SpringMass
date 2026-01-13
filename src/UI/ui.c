@@ -107,21 +107,21 @@ int ShowPauseDialog()
     Rectangle resumeButtonBounds = { buttonX, y + dialogHeight * i / (numButtons + 1), buttonWidth, buttonHeight };
     if (GuiButton(resumeButtonBounds, "Resume"))
     {
-        return 0;
+        return 1;
     }
     i++;
     
     Rectangle settingsButtonBounds = { buttonX, y + dialogHeight * i / (numButtons + 1), buttonWidth, buttonHeight };
     if (GuiButton(settingsButtonBounds, "Settings"))
     {
-        return 1;
+        return 2;
     }
     i++;
 
     Rectangle exitButtonBounds = { buttonX, y + dialogHeight * i / (numButtons + 1), buttonWidth, buttonHeight };
     if (GuiButton(exitButtonBounds, "Exit"))
     {
-        return 2;
+        return 3;
     }
     return -1;
 }
@@ -165,11 +165,13 @@ int ShowSettings()
     Rectangle themeButtonBounds = { buttonX, y + dialogHeight * i / (numButtons + 1), buttonWidth, buttonHeight };
     if (GuiButton(themeButtonBounds, "Change Theme"))
     {
-        return 1;
+        return 2;
     }
     return -1;
 }
 
+bool showColorPanel = false; // This is bad, change this..
+bool showColorScroll = true;
 void ShowThemeChange(SpringMassRenderState *state)
 {
     float screenWidth = GetScreenWidth();
@@ -193,41 +195,64 @@ void ShowThemeChange(SpringMassRenderState *state)
     DrawText(text, x + (dialogWidth / 2) - (textWidth / 2), y + 10, fontSize, GRAY);
 
     // Add buttons inside the group box
-    int numButtons = 1; // UPDATE if button is added, need a fix for this
+    int numButtons = 2; // UPDATE if button is added, need a fix for this
     float buttonWidth = 150;
     float buttonHeight = 40;
     float buttonX = x + (dialogWidth - buttonWidth) / 2;
     int i = 1;
 
-    static int listViewScroll = 0;
-    static int active = 0;
-    static int focus = -1;
+        static int listViewScroll = 0;
+        static int active = 0;
+        static int focus = -1;
+        
+        // Array of colors matching the list
+        static Color themeColors[] = {
+            DARKGRAY, MAROON, ORANGE, DARKGREEN, DARKBLUE, DARKPURPLE, DARKBROWN,
+            GRAY, RED, GOLD, LIME, BLUE, VIOLET, BROWN,
+            LIGHTGRAY, PINK, YELLOW, GREEN, SKYBLUE, PURPLE, BEIGE
+        };
+        
+        static const char* colorNames[] = {
+            "DARKGRAY", "MAROON", "ORANGE", "DARKGREEN", "DARKBLUE", "DARKPURPLE", "DARKBROWN",
+            "GRAY", "RED", "GOLD", "LIME", "BLUE", "VIOLET", "BROWN",
+            "LIGHTGRAY", "PINK", "YELLOW", "GREEN", "SKYBLUE", "PURPLE", "BEIGE"
+        };
+        
+        Rectangle colorsListBounds = { buttonX, y + dialogHeight * i / (numButtons + 1), buttonWidth, buttonHeight * 3 };
+        if (showColorScroll)
+        {
+            int result = GuiListViewEx(colorsListBounds, 
+                        colorNames,
+                        21,
+                        &listViewScroll,
+                        &active,
+                        &focus);
+            
+            // Apply the theme color based on the selected item (active)
+            if (active >= 0 && active < 21) {
+                SetThemeColor(themeColors[active]);
+                state->themeColor = themeColors[active];
+            }
+        }
+        i++;
     
-    // Array of colors matching the list
-    static Color themeColors[] = {
-        DARKGRAY, MAROON, ORANGE, DARKGREEN, DARKBLUE, DARKPURPLE, DARKBROWN,
-        GRAY, RED, GOLD, LIME, BLUE, VIOLET, BROWN,
-        LIGHTGRAY, PINK, YELLOW, GREEN, SKYBLUE, PURPLE, BEIGE
-    };
+    static bool showColorPanel = false;
+    static Color customColor = BLUE;
     
-    static const char* colorNames[] = {
-        "DARKGRAY", "MAROON", "ORANGE", "DARKGREEN", "DARKBLUE", "DARKPURPLE", "DARKBROWN",
-        "GRAY", "RED", "GOLD", "LIME", "BLUE", "VIOLET", "BROWN",
-        "LIGHTGRAY", "PINK", "YELLOW", "GREEN", "SKYBLUE", "PURPLE", "BEIGE"
-    };
+    Rectangle customColorButtonBounds = { buttonX, y + dialogHeight * i / (numButtons + 1) + 20, buttonWidth, buttonHeight };
+    if (GuiButton(customColorButtonBounds, "Custom"))
+    {
+        showColorPanel = !showColorPanel;  // Toggle the panel
+    }
     
-    Rectangle colorsListBounds = { buttonX, y + dialogHeight * i / (numButtons + 1), buttonWidth, buttonHeight * 3 };
-    int result = GuiListViewEx(colorsListBounds, 
-                colorNames,
-                21,
-                &listViewScroll,
-                &active,
-                &focus);
-    
-    // Apply the theme color based on the selected item (active)
-    if (active >= 0 && active < 21) {
-        SetThemeColor(themeColors[active]);
-        state->themeColor = themeColors[active];
+    if (showColorPanel)
+    {
+        Rectangle colorPickerBounds = { x + (dialogWidth / 2) - 100, y + (dialogHeight / 2) - 100, 200, 200 };
+        GuiColorPicker(colorPickerBounds, NULL, &customColor);
+        
+        // Apply the custom color
+        SetThemeColor(customColor);
+        state->themeColor = customColor;
     }
 }
 
