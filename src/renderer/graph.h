@@ -9,6 +9,7 @@
 #define GRAPH_H
 
 #include "raylib.h"
+#include "../core/consts.h"
 
 /**
  * @brief Initialize the graphing system.
@@ -27,7 +28,7 @@ void UpdateGraph(float displacement, float time);
  * @param displacement The current displacement value.
  * @param time The current time value.
  */
-void DrawGraph(float displacement, float time, Color themeColor);
+void DrawGraph(float displacement, float time, SimColor themeColor);
 
 /**
  * @brief Close the graph window.

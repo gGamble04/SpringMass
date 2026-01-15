@@ -9,11 +9,11 @@
 #include "UI/ui.h"
 #include "raygui.h"
 
-void SetThemeColor(Color themeColor)
+void SetThemeColor(SimColor themeColor)
 {
-    GuiSetStyle(LABEL, TEXT_COLOR_NORMAL, ColorToInt(themeColor));
-    GuiSetStyle(BUTTON, BORDER_COLOR_FOCUSED, ColorToInt(themeColor));
-    GuiSetStyle(BUTTON, TEXT_COLOR_FOCUSED, ColorToInt(themeColor));
+    GuiSetStyle(LABEL, TEXT_COLOR_NORMAL, ColorToInt(SimColorToRayColor(themeColor)));
+    GuiSetStyle(BUTTON, BORDER_COLOR_FOCUSED, ColorToInt(SimColorToRayColor(themeColor)));
+    GuiSetStyle(BUTTON, TEXT_COLOR_FOCUSED, ColorToInt(SimColorToRayColor(themeColor)));
 }
 
 // TODO: only move sliders if click happeded inside bouding box
@@ -57,7 +57,7 @@ void DrawVariableSliders(SpringMassSystemState *systemState)
     GuiSlider(sliderBounds, TextFormat("e=%.1f", systemState->restitution), NULL, &systemState->restitution, e_min, e_max);
 }
 
-void ShowDamping(float c, float k, float m, Color themeColor)
+void ShowDamping(float c, float k, float m, SimColor themeColor)
 {
     // For a mass-spring-damper system, the critical damping coefficient is:
     //   c_crit = 2 * sqrt(k * m)
@@ -80,7 +80,7 @@ void ShowDamping(float c, float k, float m, Color themeColor)
 
     const int fontSize = 20;
     // UPDATE if I change this to label i wont have to pass themeColor
-    DrawText(dampingType, UI_SLIDER_X, UI_SLIDER_Y + 7 * UI_SLIDER_HEIGHT + 5, fontSize, themeColor); 
+    DrawText(dampingType, UI_SLIDER_X, UI_SLIDER_Y + 7 * UI_SLIDER_HEIGHT + 5, fontSize, SimColorToRayColor(themeColor)); 
 }
 
 int ShowPauseDialog()
@@ -214,11 +214,11 @@ void ShowThemeChange(SpringMassRenderState *state)
         static int active = 0;
         static int focus = -1;
         
-        // Array of colors matching the list
-        static Color themeColors[] = {
-            DARKGRAY, MAROON, ORANGE, DARKGREEN, DARKBLUE, DARKPURPLE, DARKBROWN,
-            GRAY, RED, GOLD, LIME, BLUE, VIOLET, BROWN,
-            LIGHTGRAY, PINK, YELLOW, GREEN, SKYBLUE, PURPLE, BEIGE
+        // Array of sim colors matching the list
+        static SimColor themeColors[] = {
+            SIM_DARKGRAY, SIM_MAROON, SIM_ORANGE, SIM_DARKGREEN, SIM_DARKBLUE, SIM_DARKPURPLE, SIM_DARKBROWN,
+            SIM_GRAY, SIM_RED, SIM_GOLD, SIM_LIME, SIM_BLUE, SIM_VIOLET, SIM_BROWN,
+            SIM_LIGHTGRAY, SIM_PINK, SIM_YELLOW, SIM_GREEN, SIM_SKYBLUE, SIM_PURPLE, SIM_BEIGE
         };
         
         static const char* colorNames[] = {
@@ -260,8 +260,8 @@ void ShowThemeChange(SpringMassRenderState *state)
         GuiColorPicker(colorPickerBounds, NULL, &customColor);
         
         // Apply the custom color
-        SetThemeColor(customColor);
-        state->themeColor = customColor;
+        SetThemeColor(RayColorToSimColor(customColor));
+        state->themeColor = RayColorToSimColor(customColor);
     }
 }
 

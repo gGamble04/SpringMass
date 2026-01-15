@@ -8,8 +8,6 @@
 #include "renderer/renderer.h"
 #include "math.h"
 
-static inline Color SimColorToRayColor(SimColor color);
-
 // TODO: Why is the position a rectangle? Should be a Vector2 only??!
 void InitRender(SpringMassRenderState *state, int windowWidth, int windowHeight, const char *title)
 {
@@ -19,7 +17,7 @@ void InitRender(SpringMassRenderState *state, int windowWidth, int windowHeight,
     state->massRectangle = (Rectangle){ 150, FLOOR_HEIGHT - RECT_SIZE - FLOOR_THICKNESS / 2, RECT_SIZE, RECT_SIZE }; // Initial position of the mass
     state->massColor = RED; // Color of the mass rectangle
     
-    state->themeColor = BLUE;
+    state->themeColor = SIM_BLUE;
     
     state->springAnchorPoint = (Vector2){ 0, state->massRectangle.y + RECT_SIZE / 2 }; // Fixed anchor point of the spring
     state->springAttachPoint = (Vector2){ state->massRectangle.x, state->massRectangle.y + RECT_SIZE / 2 }; // Attachment point of the spring on the mass
@@ -35,7 +33,7 @@ void InitRender(SpringMassRenderState *state, int windowWidth, int windowHeight,
 
 void ShowStartupText(SpringMassRenderState *state)
 {
-    DrawText("Spring-Mass System", 10, 10, 30, state->themeColor); // Title 
+    DrawText("Spring-Mass System", 10, 10, 30, SimColorToRayColor(state->themeColor)); // Title 
 
     const char *text1 = "Welcome to the Spring-Mass Simulation!";
     int fontSize1 = 20;
@@ -65,7 +63,7 @@ void ShowStartupTextFadeOut(SpringMassRenderState *state, float dt, float fadeTi
     if (cosValue < 0.0f) cosValue = 0.0f; // Clamp to 0
     int alpha = (int)(cosValue * 255.0f); // Map 0-1 to 0-255
 
-    Color color = state->themeColor;
+    Color color = SimColorToRayColor(state->themeColor);
     color.a = alpha;
     DrawText("Spring-Mass System", 10, 10, 30, color); // Title 
 
@@ -186,9 +184,4 @@ void Render_EndDrawing()
 void Render_ClearBackground(SimColor color)
 {
     ClearBackground(SimColorToRayColor(color));
-}
-
-static inline Color SimColorToRayColor(SimColor color)
-{
-    return (Color){ color.r, color.g, color.b, color.a };
 }

@@ -12,7 +12,7 @@
 #include "core/consts.h"
 #include "renderer/renderer.h"
 
-void SetThemeColor(Color themeColor);
+void SetThemeColor(SimColor themeColor);
 
 /**
  * @brief Draws sliders for adjusting the spring-mass system parameters.
@@ -28,7 +28,7 @@ void DrawVariableSliders(SpringMassSystemState *systemState);
  * @param x X position to draw the text.
  * @param y Y position to draw the text.
  */
-void ShowDamping(float c, float k, float m, Color themeColor);
+void ShowDamping(float c, float k, float m, SimColor themeColor);
 
 /**
  * @brief Displays the pause dialog with options.

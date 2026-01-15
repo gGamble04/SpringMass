@@ -6,7 +6,7 @@
  */
 
 #include "graph.h"
-#include "../core/consts.h"
+#include "renderer.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -66,7 +66,7 @@ void UpdateGraph(float displacement, float time) {
     if (time > maxTime) maxTime = time;
 }
 
-void DrawGraph(float displacement, float time, Color themeColor) {
+void DrawGraph(float displacement, float time, SimColor themeColor) {
     // All drawing is offset to start at (WIDTH+1, 0)
     int offsetX = GRAPH_X;
     int offsetY = GRAPH_Y;
@@ -138,7 +138,7 @@ void DrawGraph(float displacement, float time, Color themeColor) {
             float y1 = offsetY + GRAPH_HEIGHT - MARGIN - ((dataPoints[i].y - minDisplacement) / displacementRange) * graphHeight;
             float y2 = offsetY + GRAPH_HEIGHT - MARGIN - ((dataPoints[i + 1].y - minDisplacement) / displacementRange) * graphHeight;
             
-            DrawLineEx((Vector2){x1, y1}, (Vector2){x2, y2}, 2.0f, themeColor);
+            DrawLineEx((Vector2){x1, y1}, (Vector2){x2, y2}, 2.0f, SimColorToRayColor(themeColor));
         }
         
         // Draw current point
@@ -148,7 +148,7 @@ void DrawGraph(float displacement, float time, Color themeColor) {
     }
     
     // Draw current values
-    DrawText(TextFormat("Current Displacement: %.2f", displacement), offsetX + GRAPH_WIDTH - 545, offsetY + MARGIN - 25, 15, themeColor);
+    DrawText(TextFormat("Current Displacement: %.2f", displacement), offsetX + GRAPH_WIDTH - 545, offsetY + MARGIN - 25, 15, SimColorToRayColor(themeColor));
     
     // Draw min/max labels
     DrawText(TextFormat("%.2f", maxDisplacement), offsetX + 5, offsetY + MARGIN, 12, GRAY);

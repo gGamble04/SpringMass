@@ -13,6 +13,16 @@
 #include<raylib.h>
 #include "core/consts.h"
 
+static inline Color SimColorToRayColor(SimColor color)
+{
+    return (Color){ color.r, color.g, color.b, color.a };
+}
+
+static inline SimColor RayColorToSimColor(Color color)
+{
+    return (SimColor){ color.r, color.g, color.b, color.a };
+}
+
 /**
  * @brief State for rendering the spring-mass system.
  * 
@@ -20,7 +30,7 @@
  * 
  * Rectangle massRectangle: Position and size of the mass rectangle.
  * 
- * Color color: Color of the mass rectangle.
+ * SimColor color: Color of the mass rectangle.
  * 
  * Vector2 springAnchorPoint: Fixed anchor point of the spring.
  * 
@@ -40,7 +50,7 @@ typedef struct SpringMassRenderState {
     Rectangle massRectangle; /**< Position and size of the mass rectangle */
     Color massColor; /**< Color of the mass rectangle */
 
-    Color themeColor;
+    SimColor themeColor;
     
     Vector2 springAnchorPoint; /**< Fixed anchor point of the spring */
     Vector2 springAttachPoint; /**< Attachment point of the spring on the mass */
@@ -143,4 +153,4 @@ void Render_EndDrawing();
 
 void Render_ClearBackground(SimColor color);
 
-#endif
+#endif 
