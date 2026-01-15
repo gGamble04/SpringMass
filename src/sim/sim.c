@@ -1,25 +1,32 @@
-/**
- * @file sim.c
- * @brief Implementation of the Spring-Mass System Simulation.
- * @author Gabe G.
- * @date 1-13-2026
- */
+/***************************************************************
+ * @file sim.c                                                 *
+ * @brief Implementation of the Spring-Mass System Simulation. *
+ * @author Gabe G.                                             *
+ * @date 1-13-2026                                             *
+ ***************************************************************/
 
 #include "sim.h"
 #include "../core/consts.h"
 #include "UI/ui.h"
 #include "renderer/graph.h"
 
-// Forward declarations
-static bool ClickInBoundingBox(Rectangle box);
-static bool SimHandleDragging(SimState *sim);
-static void SimResolveBounds(SimState *sim);
-static void ShowUI(SimState *sim);
+/**********************************
+ *      Forward Declarations      *
+ **********************************/
 
-void InitSim(SimState *sim, int windowWidth, int windowHeight, const char *title)
+static bool ClickInBoundingBox(Rectangle box); // Check if mouse click is in bounding box
+static bool SimHandleDragging(SimState *sim); // Handle dragging logic; returns true if dragging is occurring
+static void SimResolveBounds(SimState *sim); // Ensure the mass stays within bounds defined by the spring's anchor and max extension
+static void ShowUI(SimState *sim); // Draw the UI elements
+
+/***********************************
+ *      External API Functions     *
+ ***********************************/
+
+void InitSim(SimState *sim, int windowWidth, int windowHeight, const char *title, int FPS)
 {
     InitSystem(&sim->systemState);
-    InitRender(&sim->renderState, windowWidth, windowHeight, title);
+    InitRender(&sim->renderState, windowWidth, windowHeight, title, FPS);
     InitGraph();
     sim->isRunning = true;
     sim->isPaused = false;
@@ -108,8 +115,11 @@ void DrawSim(SimState *sim, float dt, float time)
     Render_EndDrawing();
 }
 
-// TODO: fix exit logic 
-// TODO: would probably be cleaner if the exit button and the pause->exit button worked together
+float CurrentFrameTime()
+{
+    return Render_GetFrameTime();
+}
+
 bool SimRunning(const SimState *sim)
 {
     return ExitButtonClicked() && sim->isRunning;
@@ -125,8 +135,6 @@ void StopSim()
  *      Internal helper functions      *
  ***************************************/
 
-
-// Check if mouse click is in bounding box
 static bool ClickInBoundingBox(Rectangle box)
 {
     Vec2D mousePosition = GetMousePOS();
@@ -140,7 +148,6 @@ static bool ClickInBoundingBox(Rectangle box)
     return false;
 }
 
-// Handle dragging logic; returns true if dragging is occurring
 static bool SimHandleDragging(SimState *sim)
 {
     if (!sim->isDragging) 
@@ -174,7 +181,6 @@ static bool SimHandleDragging(SimState *sim)
     return false;
 }
 
-// Ensure the mass stays within bounds defined by the spring's anchor and max extension
 static void SimResolveBounds(SimState *sim)
 {
     float x_min = sim->renderState.springAnchorPoint.x + SPRING_STOP_MARGIN; // Leftmost point of spring plus some margin
@@ -182,7 +188,6 @@ static void SimResolveBounds(SimState *sim)
     SpringmassResolveBounds(&sim->systemState, x_min, x_max);
 }
 
-// Draw the UI elements
 static void ShowUI(SimState *sim)
 { 
     SetThemeColor(sim->renderState.themeColor);

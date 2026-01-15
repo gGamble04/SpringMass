@@ -1,9 +1,9 @@
-/**
- * @file graph.c
- * @brief Implementation of the Displacement vs. Time Graph for the Spring-Mass System Simulation.
- * @author Gabe G.
- * @date 1-13-2026
- */
+/***************************************************************************************************
+ * @file graph.c                                                                                   *
+ * @brief Implementation of the Displacement vs. Time Graph for the Spring-Mass System Simulation. *
+ * @author Gabe G.                                                                                 *
+ * @date 1-13-2026                                                                                 *
+ ***************************************************************************************************/
 
 #include "graph.h"
 #include "renderer.h"

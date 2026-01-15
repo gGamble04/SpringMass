@@ -1,9 +1,9 @@
-/**
- * @file ui.h
- * @brief Header file for the User Interface of the Spring-Mass System Simulation.
- * @author Gabe G.
- * @date 1-9-2026
- */
+/***********************************************************************************
+ * @file ui.h                                                                      *
+ * @brief Header file for the User Interface of the Spring-Mass System Simulation. *
+ * @author Gabe G.                                                                 *                                            
+ * @date 1-9-2026                                                                  *    
+ ***********************************************************************************/
 
 #ifndef UI_H
 #define UI_H
@@ -12,6 +12,10 @@
 #include "core/consts.h"
 #include "renderer/renderer.h"
 
+/**
+ * @brief Sets the theme color for the UI elements.
+ * @param themeColor The SimColor to set as the theme.
+ */
 void SetThemeColor(SimColor themeColor);
 
 /**
@@ -60,18 +64,45 @@ int ShowSettings();
  */
 void ShowThemeChange(SpringMassRenderState *state);
 
+/**
+ * @brief Checks if the Escape key has been pressed.
+ * @return true if the Escape key is pressed, false otherwise.
+ */
 bool EscKeyPressed();
 
+/**
+ * @brief Checks if the exit button has been clicked.
+ * @return true if the exit button is clicked, false otherwise.
+ */
 bool ExitButtonClicked();
 
+/**
+ * @brief Destroys the renderer and closes the window.
+ */
 void DestroyRenderer();
 
+/**
+ * @brief Gets the current mouse position.
+ * @return A Vec2D structure containing the mouse position.
+ */
 Vec2D GetMousePOS(); 
 
+/**
+ * @brief Checks if the left mouse button has been pressed.
+ * @return true if the left mouse button is pressed, false otherwise.
+ */
 bool LeftMouseButtonPressed();
 
+/**
+ * @brief Checks if the left mouse button has been released.
+ * @return true if the left mouse button is released, false otherwise.
+ */
 bool LeftMouseButtonReleased();
 
+/**
+ * @brief Checks if the left mouse button is currently down.
+ * @return true if the left mouse button is down, false otherwise.
+ */
 bool LeftMouseButtonDown();
 
 #endif

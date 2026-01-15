@@ -1,9 +1,9 @@
-/**
- * @file physics.c
- * @brief Implementation of the Spring-Mass System Physics.
- * @author Gabe G.
- * @date 1-13-2026
- */
+/************************************************************
+ * @file physics.c											*
+ * @brief Implementation of the Spring-Mass System Physics. *
+ * @author Gabe G.										    *
+ * @date 1-13-2026								            *
+ ************************************************************/
 
 #include "core/physics.h"
 

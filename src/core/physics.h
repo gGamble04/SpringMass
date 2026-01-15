@@ -1,9 +1,9 @@
-/**
- * @file physics.h
- * @brief Header for spring-mass system physics.
- * @author Gabriel Gamble
- * @date 1-5-2026
- */
+/*************************************************
+ * @file physics.h                               *
+ * @brief Header for spring-mass system physics. *
+ * @author Gabriel Gamble                        *
+ * @date 1-5-2026                                *
+ *************************************************/
 
 #ifndef PHYSICS_H
 #define PHYSICS_H
@@ -12,22 +12,6 @@
 
 /**
  * @brief State of a 1D spring-mass system.
- * 
- * Members:
- * 
- * float x: Position (horizontal only)
- * 
- * float velocity: Velocity
- * 
- * float springConst: Spring constant (k)
- * 
- * float mass: Mass (m)
- * 
- * float damping: Damping coefficient (c)
- * 
- * float equilibrium: Equilibrium (rest) position
- * 
- * float restitution: Coefficient of restitution (bounciness)
  */
 typedef struct SpringMassSystemState {
     float x; /**< Position (only horizontal) */

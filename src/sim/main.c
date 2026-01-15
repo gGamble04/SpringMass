@@ -7,14 +7,12 @@
 
 #include "core/consts.h"
 #include "sim.h"
-#include "UI/ui.h"
 
 int main() 
 {
     // Initialization
     SimState sim;
-    InitSim(&sim, WIDTH, HEIGHT, "Spring-Mass System");
-    SetTargetFPS(120);
+    InitSim(&sim, WIDTH, HEIGHT, "Spring-Mass System", 120);
 
     float elapsedTime = 0.0f; // Track total simulation time
     // float becomes imprecise after ~4.5 hours, so this is safe.
@@ -23,7 +21,7 @@ int main()
     // Simulation loop
     while (SimRunning(&sim))
     {   
-        float dt = GetFrameTime(); // Time step: delta time between frames
+        float dt = CurrentFrameTime(); // Time step: delta time between frames
         if (!sim.isPaused && 
             !sim.showSettings && 
             !sim.showThemeChange)

@@ -38,21 +38,24 @@
 typedef struct SimState {
 	SpringMassSystemState systemState; /**< Physical state of the spring-mass system */
 	SpringMassRenderState renderState; /**< Rendering state of the spring-mass system */
+	
 	bool isRunning; /**< Indicates if the simulation is currently running */
+	
 	bool isPaused; /**< Indicates if the simulation is currently paused */
 	float pausedTime; /**< The simulation time when paused (used to freeze graph) */
+	
 	bool showSettings; /**< Indicates if the settings dialog is currently shown */
 	bool showThemeChange; /**< Indicates if the theme change dialog is currently shown */
+	
 	bool isDragging; /**< Indicates if the mass is currently being dragged */
 	float dragGrabOffsetX; /**< Horizontal offset from the grab point during dragging */
-
 } SimState;
 
 /**
  * @brief Initializes the simulation state, including system and render states.
  * @param simulation Pointer to the SimState to initialize.
  */
-void InitSim(SimState *simulation, int windowWidth, int windowHeight, const char *title);
+void InitSim(SimState *simulation, int windowWidth, int windowHeight, const char *title, int FPS);
 
 /**
  * @brief Updates the simulation state based on elapsed time.
@@ -69,6 +72,12 @@ void UpdateSim(SimState *sim, float dt, float time);
  * @param time Current simulation time.
  */
 void DrawSim(SimState *sim, float dt, float time);
+
+/**
+ * @brief Gets the time taken to render the current frame.
+ * @return Time in seconds taken to render the current frame.
+ */
+float CurrentFrameTime();
 
 /**
  * @brief Checks if the simulation is currently running.

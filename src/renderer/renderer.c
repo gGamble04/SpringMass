@@ -1,17 +1,17 @@
-/**
- * @file renderer.c
- * @brief Implementation of the Spring-Mass System Rendering.
- * @author Gabe G.
- * @date 1-13-2026
- */
+/**************************************************************
+ * @file renderer.c                                           *
+ * @brief Implementation of the Spring-Mass System Rendering. *
+ * @author Gabe G.                                            *
+ * @date 1-13-2026                                            *
+ **************************************************************/
 
 #include "renderer/renderer.h"
 #include "math.h"
 
-// TODO: Why is the position a rectangle? Should be a Vector2 only??!
-void InitRender(SpringMassRenderState *state, int windowWidth, int windowHeight, const char *title)
+void InitRender(SpringMassRenderState *state, int windowWidth, int windowHeight, const char *title, int FPS)
 {
     InitWindow(windowWidth, windowHeight, title);
+    SetTargetFPS(FPS);
     SetExitKey(KEY_NULL);
 
     state->massRectangle = (Rectangle){ 150, FLOOR_HEIGHT - RECT_SIZE - FLOOR_THICKNESS / 2, RECT_SIZE, RECT_SIZE }; // Initial position of the mass
@@ -185,3 +185,9 @@ void Render_ClearBackground(SimColor color)
 {
     ClearBackground(SimColorToRayColor(color));
 }
+
+float Render_GetFrameTime()
+{
+    return GetFrameTime();
+}
+

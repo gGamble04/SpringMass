@@ -1,9 +1,9 @@
-/**
- * @file graph.h
- * @brief Header file for the Displacement vs. Time Graph in the Spring-Mass System
- * @author Gabe G.
- * @date 1-13-2026
- */
+/*************************************************************************************
+ * @file graph.h                                                                     *
+ * @brief Header file for the Displacement vs. Time Graph in the Spring-Mass System. *
+ * @author Gabe G.                                                                   *
+ * @date 1-13-2026                                                                   *
+ *************************************************************************************/
 
 #ifndef GRAPH_H
 #define GRAPH_H

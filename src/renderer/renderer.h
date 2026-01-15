@@ -1,9 +1,9 @@
-/**
- * @file renderer.h
- * @brief Header file for rendering the spring-mass system simulation.
- * @author Gabe G.
- * @date 1-8-2026
- */
+/***********************************************************************
+ * @file renderer.h                                                    *
+ * @brief Header file for rendering the spring-mass system simulation. *
+ * @author Gabe G.                                                     *
+ * @date 1-8-2026                                                      *
+ ***********************************************************************/
 
 #ifndef RENDERER_H
 #define RENDERER_H
@@ -13,56 +13,25 @@
 #include<raylib.h>
 #include "core/consts.h"
 
+/**
+ * @brief Convert SimColor to Raylib Color.
+ * @param color SimColor to convert.
+ * @return Converted Raylib Color.
+ */
 static inline Color SimColorToRayColor(SimColor color)
 {
     return (Color){ color.r, color.g, color.b, color.a };
 }
 
+/**
+ * @brief Convert Raylib Color to SimColor.
+ * @param color Raylib Color to convert.
+ * @return Converted SimColor.
+ */
 static inline SimColor RayColorToSimColor(Color color)
 {
     return (SimColor){ color.r, color.g, color.b, color.a };
 }
-
-/**
- * @brief State for rendering the spring-mass system.
- * 
- * Members:
- * 
- * Rectangle massRectangle: Position and size of the mass rectangle.
- * 
- * SimColor color: Color of the mass rectangle.
- * 
- * Vector2 springAnchorPoint: Fixed anchor point of the spring.
- * 
- * Vector2 springAttachPoint: Attachment point of the spring on the mass.
- * 
- * int numSpringSegments: Number of segments in the spring.
- * 
- * float segmentLength: Length of each spring segment.
- * 
- * Vector2 floorStart: Start point of the floor line.
- * 
- * Vector2 floorEnd: End point of the floor line.
- * 
- * int floorThickness: Thickness of the floor line.
- */
-typedef struct SpringMassRenderState {
-    Rectangle massRectangle; /**< Position and size of the mass rectangle */
-    Color massColor; /**< Color of the mass rectangle */
-
-    SimColor themeColor;
-    
-    Vector2 springAnchorPoint; /**< Fixed anchor point of the spring */
-    Vector2 springAttachPoint; /**< Attachment point of the spring on the mass */
-    int numSpringSegments; /**< Number of segments in the spring */
-    float segmentLength; /**< Length of each spring segment */
-    
-    Vector2 floorStart; /**< Start point of the floor line */
-    Vector2 floorEnd; /**< End point of the floor line */
-    int floorThickness; /**< Thickness of the floor line */
-
-    float elapsedTime;
-} SpringMassRenderState;
 
 /**
  * @brief Add two Vector2 vectors.
@@ -108,13 +77,44 @@ static inline double vec2Length(Vector2 v)
 }
 
 /**
+ * @brief State for rendering the spring-mass system.
+ */
+typedef struct SpringMassRenderState {
+    Rectangle massRectangle; /**< Position and size of the mass rectangle */
+    Color massColor; /**< Color of the mass rectangle */
+
+    SimColor themeColor; /**< Theme color used for rendering */
+    
+    Vector2 springAnchorPoint; /**< Fixed anchor point of the spring */
+    Vector2 springAttachPoint; /**< Attachment point of the spring on the mass */
+    int numSpringSegments; /**< Number of segments in the spring */
+    float segmentLength; /**< Length of each spring segment */
+    
+    Vector2 floorStart; /**< Start point of the floor line */
+    Vector2 floorEnd; /**< End point of the floor line */
+    int floorThickness; /**< Thickness of the floor line */
+
+    float elapsedTime; /**< Used to track elapsed time for animations or timing */
+} SpringMassRenderState;
+
+/**
  * @brief Initialize the rendering state for the spring-mass system.
  * @param state Pointer to the SpringMassRenderState to initialize.
  */
-void InitRender(SpringMassRenderState *state, int windowWidth, int windowHeight, const char *title);
+void InitRender(SpringMassRenderState *state, int windowWidth, int windowHeight, const char *title, int FPS);
 
+/**
+ * @brief Show startup text for the spring-mass system.
+ * @param state Current rendering state.
+ */
 void ShowStartupText(SpringMassRenderState *state);
 
+/**
+ * @brief Show startup text with fade-out effect for the spring-mass system.
+ * @param state Current rendering state.
+ * @param dt Delta time since last frame.
+ * @param fadeTime Total time for the fade-out effect.
+ */
 void ShowStartupTextFadeOut(SpringMassRenderState *state, float dt, float fadeTime);
 
 /**
@@ -147,10 +147,26 @@ void DrawRender(SpringMassRenderState state);
  */
 void UpdateRender(SpringMassRenderState *state);
 
+/**
+ * @brief Begin the drawing phase.
+ */
 void Render_BeginDrawing();
 
+/**
+ * @brief End the drawing phase.
+ */
 void Render_EndDrawing();
 
+/**
+ * @brief Clear the background with a specified color.
+ * @param color Color to clear the background with.
+ */
 void Render_ClearBackground(SimColor color);
+
+/**
+ * @brief Get the time elapsed since the last frame.
+ * @return Time in seconds since the last frame.
+ */
+float Render_GetFrameTime();
 
 #endif 
