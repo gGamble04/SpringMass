@@ -1,14 +1,14 @@
-/**
- * @file main.c
- * @brief Entry point for the Spring-Mass System Simulation.
- * @author Gabe G.
- * @date 1-9-2026
- */
+/*************************************************************
+ * @file main.c                                              *
+ * @brief Entry point for the Spring-Mass System Simulation. *
+ * @author Gabe G.                                           *
+ * @date 1-9-2026                                            *
+ *************************************************************/
 
 #include "core/consts.h"
 #include "sim.h"
 
-int main() 
+int main()
 {
     // Initialization
     SimState sim;
@@ -20,11 +20,9 @@ int main()
 
     // Simulation loop
     while (SimRunning(&sim))
-    {   
+    {
         float dt = CurrentFrameTime(); // Time step: delta time between frames
-        if (!sim.isPaused && 
-            !sim.showSettings && 
-            !sim.showThemeChange)
+        if (!sim.isPaused && !sim.showSettings && !sim.showThemeChange)
         {
             elapsedTime += dt; // Only update total elapsed time if not paused or in some menu
         }

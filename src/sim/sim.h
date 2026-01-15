@@ -11,84 +11,31 @@
 #include "core/physics.h"
 #include "renderer/renderer.h"
 
-/** 
- * @struct SimState
- * @brief Represents the overall state of the simulation, including system state, render state, and dragging interaction state.
- * 
- * Members:
- * 
- * SpringMassSystemState systemState: Physical state of the spring-mass system.
- * 
- * SpringMassRenderState renderState: Rendering state of the spring-mass system.
- * 
- * bool isRunning: Indicates if the simulation is currently running.
- * 
- * bool isPaused: Indicates if the simulation is currently paused.
- * 
- * float pausedTime: The simulation time when paused (used to freeze graph).
- * 
- * bool showSettings: Indicates if the settings dialog is currently shown.
- * 
- * bool showThemeChange: Indicates if the theme change dialog is currently shown.
- * 
- * bool isDragging: Indicates if the mass is currently being dragged.
- * 
- * float dragGrabOffsetX: Horizontal offset from the grab point during dragging.
- */
-typedef struct SimState {
-	SpringMassSystemState systemState; /**< Physical state of the spring-mass system */
-	SpringMassRenderState renderState; /**< Rendering state of the spring-mass system */
-	
-	bool isRunning; /**< Indicates if the simulation is currently running */
-	
-	bool isPaused; /**< Indicates if the simulation is currently paused */
-	float pausedTime; /**< The simulation time when paused (used to freeze graph) */
-	
-	bool showSettings; /**< Indicates if the settings dialog is currently shown */
-	bool showThemeChange; /**< Indicates if the theme change dialog is currently shown */
-	
-	bool isDragging; /**< Indicates if the mass is currently being dragged */
-	float dragGrabOffsetX; /**< Horizontal offset from the grab point during dragging */
+// Overall simulation state
+typedef struct SimState
+{
+    SpringMassSystemState systemState; // Physical state of the spring-mass system
+    SpringMassRenderState renderState; // Rendering state of the spring-mass system
+
+    bool isRunning; // Simulation is currently running
+
+    bool isPaused;    // Simulation is currently paused
+    float pausedTime; // Time when paused (used to freeze graph)
+
+    bool showSettings;    // Settings dialog is shown
+    bool showThemeChange; // Theme change dialog is shown
+
+    bool isDragging;       // Mass is currently being dragged
+    float dragGrabOffsetX; // Horizontal offset from grab point during drag
 } SimState;
 
-/**
- * @brief Initializes the simulation state, including system and render states.
- * @param simulation Pointer to the SimState to initialize.
- */
-void InitSim(SimState *simulation, int windowWidth, int windowHeight, const char *title, int FPS);
-
-/**
- * @brief Updates the simulation state based on elapsed time.
- * @param sim Pointer to the SimState.
- * @param dt Time delta since the last update.
- * @param time Current simulation time.
- */
-void UpdateSim(SimState *sim, float dt, float time);
-
-/**
- * @brief Draws the current state of the simulation.
- * @param sim Pointer to the SimState.
- * @param dt Time delta since the last draw.
- * @param time Current simulation time.
- */
-void DrawSim(SimState *sim, float dt, float time);
-
-/**
- * @brief Gets the time taken to render the current frame.
- * @return Time in seconds taken to render the current frame.
- */
-float CurrentFrameTime();
-
-/**
- * @brief Checks if the simulation is currently running.
- * @param sim Pointer to the SimState.
- * @return true if the simulation is running, false otherwise.
- */
-bool SimRunning(const SimState *sim);
-
-/**
- * @brief Stops the simulation.
- */
-void StopSim();
+// Function declarations
+void InitSim(SimState *simulation, int windowWidth, int windowHeight, const char *title,
+             int FPS);                               // Initialize simulation state
+void UpdateSim(SimState *sim, float dt, float time); // Update simulation state based on elapsed time
+void DrawSim(SimState *sim, float dt, float time);   // Draw current state of simulation
+float CurrentFrameTime();                            // Get time taken to render current frame
+bool SimRunning(const SimState *sim);                // Check if simulation is running
+void StopSim();                                      // Stop the simulation
 
 #endif

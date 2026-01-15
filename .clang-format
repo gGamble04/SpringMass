@@ -1,0 +1,4 @@
+BasedOnStyle: Microsoft
+
+# Spacing inside braces
+Cpp11BracedListStyle: false  # Adds spaces: { x, y } instead of {x, y}
