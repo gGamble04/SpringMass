@@ -52,7 +52,7 @@ typedef struct SimState {
  * @brief Initializes the simulation state, including system and render states.
  * @param simulation Pointer to the SimState to initialize.
  */
-void InitSim(SimState *simulation);
+void InitSim(SimState *simulation, int windowWidth, int windowHeight, const char *title);
 
 /**
  * @brief Updates the simulation state based on elapsed time.

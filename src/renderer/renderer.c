@@ -6,12 +6,16 @@
  */
 
 #include "renderer/renderer.h"
-#include "core/consts.h"
 #include "math.h"
 
+static inline Color SimColorToRayColor(SimColor color);
+
 // TODO: Why is the position a rectangle? Should be a Vector2 only??!
-void InitRender(SpringMassRenderState *state)
+void InitRender(SpringMassRenderState *state, int windowWidth, int windowHeight, const char *title)
 {
+    InitWindow(windowWidth, windowHeight, title);
+    SetExitKey(KEY_NULL);
+
     state->massRectangle = (Rectangle){ 150, FLOOR_HEIGHT - RECT_SIZE - FLOOR_THICKNESS / 2, RECT_SIZE, RECT_SIZE }; // Initial position of the mass
     state->massColor = RED; // Color of the mass rectangle
     
@@ -167,4 +171,24 @@ void UpdateRender(SpringMassRenderState *state)
     state->springAttachPoint.x = state->massRectangle.x;
     DrawMass(*state);
     DrawSpring(*state);
+}
+
+void Render_BeginDrawing()
+{
+    BeginDrawing();
+}
+
+void Render_EndDrawing()
+{
+    EndDrawing();
+}
+
+void Render_ClearBackground(SimColor color)
+{
+    ClearBackground(SimColorToRayColor(color));
+}
+
+static inline Color SimColorToRayColor(SimColor color)
+{
+    return (Color){ color.r, color.g, color.b, color.a };
 }

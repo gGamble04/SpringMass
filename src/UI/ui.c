@@ -7,7 +7,6 @@
 
 #define RAYGUI_IMPLEMENTATION
 #include "UI/ui.h"
-#include "core/consts.h"
 #include "raygui.h"
 
 void SetThemeColor(Color themeColor)
@@ -17,6 +16,8 @@ void SetThemeColor(Color themeColor)
     GuiSetStyle(BUTTON, TEXT_COLOR_FOCUSED, ColorToInt(themeColor));
 }
 
+// TODO: only move sliders if click happeded inside bouding box
+// TODO: if user is dragging mass and hovers over sliders, sliders will also move
 void DrawVariableSliders(SpringMassSystemState *systemState)
 {
     // Slider ranges
@@ -177,7 +178,8 @@ int ShowSettings()
     return -1;
 }
 
-bool showColorPanel = false; // This is bad, change this..
+// TODO: I dont like these globals..
+bool showColorPanel = false; 
 bool showColorScroll = true;
 void ShowThemeChange(SpringMassRenderState *state)
 {
@@ -263,5 +265,54 @@ void ShowThemeChange(SpringMassRenderState *state)
     }
 }
 
+bool EscKeyPressed()
+{
+    if (IsKeyPressed(KEY_ESCAPE))
+    {
+        return true;
+    }
+    return false;
+}
 
+bool ExitButtonClicked()
+{
+    return !WindowShouldClose();
+}
 
+void DestroyRenderer()
+{
+    CloseWindow();
+}
+
+Vec2D GetMousePOS()
+{
+    Vector2 point = GetMousePosition();
+    return (Vec2D){ point.x, point.y };
+}
+
+bool LeftMouseButtonPressed()
+{
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+        return true;
+    }
+    return false;
+}
+
+bool LeftMouseButtonReleased()
+{
+    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+    {
+        return true;
+    }
+    return false;
+}
+
+bool LeftMouseButtonDown()
+{
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+    {
+        return true;
+    }
+    return false;
+}

@@ -5,7 +5,6 @@
  * @date 1-13-2026
  */
 
-#include <raylib.h>
 #include "sim.h"
 #include "../core/consts.h"
 #include "UI/ui.h"
@@ -17,12 +16,10 @@ static bool SimHandleDragging(SimState *sim);
 static void SimResolveBounds(SimState *sim);
 static void ShowUI(SimState *sim);
 
-void InitSim(SimState *sim)
+void InitSim(SimState *sim, int windowWidth, int windowHeight, const char *title)
 {
-    InitWindow(WIDTH, HEIGHT, "Spring-Mass System Simulation");
-    SetExitKey(KEY_NULL);
     InitSystem(&sim->systemState);
-    InitRender(&sim->renderState);
+    InitRender(&sim->renderState, windowWidth, windowHeight, title);
     InitGraph();
     sim->isRunning = true;
     sim->isPaused = false;
@@ -35,7 +32,7 @@ void InitSim(SimState *sim)
 
 void UpdateSim(SimState *sim, float dt, float time)
 {
-    if (IsKeyPressed(KEY_ESCAPE)) 
+    if (EscKeyPressed()) 
     {
         // Toggle pause on ESC key
         sim->isPaused = !sim->isPaused;
@@ -51,21 +48,20 @@ void UpdateSim(SimState *sim, float dt, float time)
         }
         SimResolveBounds(sim);
         sim->renderState.massRectangle.x = sim->systemState.x;
-
         UpdateGraph(sim->systemState.x - sim->systemState.equilibrium, time);
     }
 }
 
 void DrawSim(SimState *sim, float dt, float time)
 {
-    BeginDrawing();
-        ClearBackground(BLACK); // Clear last frame
+    Render_BeginDrawing();
+        Render_ClearBackground(SIM_BLACK); // Clear last frame
         DrawGraph(sim->systemState.x - sim->systemState.equilibrium, time, sim->renderState.themeColor);
         ShowUI(sim); // Draw UI
         UpdateRender(&sim->renderState); // Update render state based on system state
         
         float textPersistTime = 8.0f; // Time to show startup text before fading (seconds)
-        float fadeTime = 7.0f; // Duration of fade-out animation (seconds)
+        float fadeTime = 2.0f; // Duration of fade-out animation (seconds)
         if (time <= textPersistTime)
         {
             ShowStartupText(&sim->renderState);
@@ -109,30 +105,34 @@ void DrawSim(SimState *sim, float dt, float time)
             ShowThemeChange(&sim->renderState);
         }
         // End of dialog handling logic
-    EndDrawing();
+    Render_EndDrawing();
 }
 
+// TODO: fix exit logic 
+// TODO: would probably be cleaner if the exit button and the pause->exit button worked together
 bool SimRunning(const SimState *sim)
 {
-    return !WindowShouldClose() && sim->isRunning;
+    return ExitButtonClicked() && sim->isRunning;
 }
+
 
 void StopSim()
 {
-    CloseWindow();
+    DestroyRenderer();
 }
 
 /***************************************
  *      Internal helper functions      *
  ***************************************/
 
-// Helper to check if mouse click is in bounding box
+
+// Check if mouse click is in bounding box
 static bool ClickInBoundingBox(Rectangle box)
 {
-    Vector2 point = GetMousePosition();
-    if(point.x >= box.x && point.x <= box.x + box.width)
+    Vec2D mousePosition = GetMousePOS();
+    if(mousePosition.x >= box.x && mousePosition.x <= box.x + box.width)
     {
-        if(point.y >= box.y && point.y <= box.y + box.height)
+        if(mousePosition.y >= box.y && mousePosition.y <= box.y + box.height)
         {
             return true;
         }
@@ -145,9 +145,9 @@ static bool SimHandleDragging(SimState *sim)
 {
     if (!sim->isDragging) 
     {
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && ClickInBoundingBox(sim->renderState.massRectangle)) 
+        if (LeftMouseButtonPressed() && ClickInBoundingBox(sim->renderState.massRectangle)) 
         {
-            Vector2 mousePosition = GetMousePosition();
+            Vec2D mousePosition = GetMousePOS();
             sim->isDragging = true;
             sim->dragGrabOffsetX = mousePosition.x - sim->systemState.x;
         } 
@@ -156,15 +156,15 @@ static bool SimHandleDragging(SimState *sim)
             return false;
         }
     }
-    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) 
+    if (LeftMouseButtonReleased()) 
     {
         sim->isDragging = false;
         sim->systemState.velocity = 0.0f;
         return true;
     }
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) 
+    if (LeftMouseButtonDown()) 
     {
-        Vector2 mousePosition = GetMousePosition();
+        Vec2D mousePosition = GetMousePOS();
         sim->systemState.x = mousePosition.x - sim->dragGrabOffsetX;
         sim->systemState.velocity = 0.0f;
         return true;

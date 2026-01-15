@@ -9,6 +9,7 @@
 #define UI_H
 
 #include "core/physics.h"
+#include "core/consts.h"
 #include "renderer/renderer.h"
 
 void SetThemeColor(Color themeColor);
@@ -58,5 +59,19 @@ int ShowSettings();
  * @param state Pointer to the SpringMassRenderState to modify.
  */
 void ShowThemeChange(SpringMassRenderState *state);
+
+bool EscKeyPressed();
+
+bool ExitButtonClicked();
+
+void DestroyRenderer();
+
+Vec2D GetMousePOS(); 
+
+bool LeftMouseButtonPressed();
+
+bool LeftMouseButtonReleased();
+
+bool LeftMouseButtonDown();
 
 #endif

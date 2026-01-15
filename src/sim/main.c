@@ -13,7 +13,7 @@ int main()
 {
     // Initialization
     SimState sim;
-    InitSim(&sim);
+    InitSim(&sim, WIDTH, HEIGHT, "Spring-Mass System");
     SetTargetFPS(120);
 
     float elapsedTime = 0.0f; // Track total simulation time

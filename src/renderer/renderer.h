@@ -11,6 +11,7 @@
 #include<stdio.h>
 #include<math.h>
 #include<raylib.h>
+#include "core/consts.h"
 
 /**
  * @brief State for rendering the spring-mass system.
@@ -100,7 +101,7 @@ static inline double vec2Length(Vector2 v)
  * @brief Initialize the rendering state for the spring-mass system.
  * @param state Pointer to the SpringMassRenderState to initialize.
  */
-void InitRender(SpringMassRenderState *state);
+void InitRender(SpringMassRenderState *state, int windowWidth, int windowHeight, const char *title);
 
 void ShowStartupText(SpringMassRenderState *state);
 
@@ -135,5 +136,11 @@ void DrawRender(SpringMassRenderState state);
  * @param state Pointer to the SpringMassRenderState to update.
  */
 void UpdateRender(SpringMassRenderState *state);
+
+void Render_BeginDrawing();
+
+void Render_EndDrawing();
+
+void Render_ClearBackground(SimColor color);
 
 #endif
