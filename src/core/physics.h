@@ -24,7 +24,7 @@ typedef struct SpringMassSystemState
     float restitution; // Coefficient of restitution (bounciness)
 } SpringMassSystemState;
 
-// Function declarations
+// Physics Function Declarations
 void InitSystem(SpringMassSystemState *state); // Initialize system to default values
 float SpringmassAccel(float x, float v, float k, float m,
                       float c);                              // Compute acceleration using Hooke's law and damping

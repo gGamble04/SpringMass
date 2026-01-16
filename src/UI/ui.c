@@ -7,12 +7,13 @@
 
 #define RAYGUI_IMPLEMENTATION
 #include "UI/ui.h"
+#include "platform_internal.h"
 #include "raygui.h"
 #include <stdio.h>
 
-void SetThemeColor(SimColor themeColor)
+void SetThemeColor(SimColor *themeColor)
 {
-    Color color = SimColorToRayColor(themeColor);
+    Color color = SimColorToRayColor(*themeColor);
 
     // Focused state: brighter, more saturated
     Color bordColorFocused = ColorBrightness(color, 0.4f); // 40% brighter
@@ -91,7 +92,7 @@ void MakeVariableSliders(SpringMassSystemState *systemState)
               e_max);
 }
 
-void ShowDamping(float c, float k, float m, SimColor themeColor)
+void ShowDamping(float c, float k, float m, SimColor *themeColor)
 {
     // For a mass-spring-damper system, the critical damping coefficient is:
     //   c_crit = 2 * sqrt(k * m)
@@ -114,10 +115,10 @@ void ShowDamping(float c, float k, float m, SimColor themeColor)
     const int fontSize = 20;
     // UPDATE if I change this to label i wont have to pass themeColor
     DrawText(dampingType, UI_SLIDER_X, UI_SLIDER_Y + 7 * UI_SLIDER_HEIGHT + 5, fontSize,
-             SimColorToRayColor(themeColor));
+             SimColorToRayColor(*themeColor));
 }
 
-int ShowPauseDialog()
+int ShowPauseDialog(void)
 {
     float screenWidth = GetScreenWidth();
     float screenHeight = GetScreenHeight();
@@ -168,7 +169,7 @@ int ShowPauseDialog()
     return -1;
 }
 
-int ShowSettings()
+int ShowSettings(void)
 {
     float screenWidth = GetScreenWidth();
     float screenHeight = GetScreenHeight();
@@ -268,7 +269,7 @@ void ShowThemeChange(SpringMassRenderState *state)
         // Apply the theme color based on the selected item (active)
         if (active >= 0 && active < 21)
         {
-            SetThemeColor(themeColors[active]);
+            SetThemeColor(&themeColors[active]);
             state->themeColor = themeColors[active];
         }
     }
@@ -290,12 +291,13 @@ void ShowThemeChange(SpringMassRenderState *state)
         GuiColorPicker(colorPickerBounds, NULL, &customColor);
 
         // Apply the custom color
-        SetThemeColor(RayColorToSimColor(customColor));
+        SimColor customSimColor = RayColorToSimColor(customColor);
+        SetThemeColor(&customSimColor);
         state->themeColor = RayColorToSimColor(customColor);
     }
 }
 
-bool EscKeyPressed()
+bool EscKeyPressed(void)
 {
     if (IsKeyPressed(KEY_ESCAPE))
     {
@@ -304,23 +306,23 @@ bool EscKeyPressed()
     return false;
 }
 
-bool ExitButtonClicked()
+bool ExitButtonClicked(void)
 {
     return !WindowShouldClose();
 }
 
-void DestroyRenderer()
+void DestroyRenderer(void)
 {
     CloseWindow();
 }
 
-Vec2D GetMousePOS()
+Vec2D GetMousePOS(void)
 {
     Vector2 point = GetMousePosition();
     return (Vec2D){ point.x, point.y };
 }
 
-bool LeftMouseButtonPressed()
+bool LeftMouseButtonPressed(void)
 {
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
@@ -329,7 +331,7 @@ bool LeftMouseButtonPressed()
     return false;
 }
 
-bool LeftMouseButtonReleased()
+bool LeftMouseButtonReleased(void)
 {
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
     {
@@ -338,7 +340,7 @@ bool LeftMouseButtonReleased()
     return false;
 }
 
-bool LeftMouseButtonDown()
+bool LeftMouseButtonDown(void)
 {
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
     {
@@ -347,12 +349,12 @@ bool LeftMouseButtonDown()
     return false;
 }
 
-bool ClickInBoundingBox(SimRect boundingBox)
+bool ClickInBoundingBox(SimRect *boundingBox)
 {
     Vector2 mousePosition = GetMousePosition();
-    if (mousePosition.x >= boundingBox.x && mousePosition.x <= boundingBox.x + boundingBox.width)
+    if (mousePosition.x >= boundingBox->x && mousePosition.x <= boundingBox->x + boundingBox->width)
     {
-        if (mousePosition.y >= boundingBox.y && mousePosition.y <= boundingBox.y + boundingBox.height)
+        if (mousePosition.y >= boundingBox->y && mousePosition.y <= boundingBox->y + boundingBox->height)
         {
             return true;
         }

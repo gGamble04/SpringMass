@@ -6,6 +6,7 @@
  ***************************************************************************************************/
 
 #include "graph.h"
+#include "platform_internal.h"
 #include "renderer.h"
 #include <stdio.h>
 #include <string.h>
@@ -24,9 +25,9 @@ static float maxDisplacement = 0.0f;
 static float maxTime = 0.0f;
 
 // Graph window dimensions and position
-static const int GRAPH_WIDTH = WIDTH;
-static const int GRAPH_HEIGHT = HEIGHT;
-static const int GRAPH_X = WIDTH + 100;
+static const int GRAPH_WIDTH = SCREEN_WIDTH;
+static const int GRAPH_HEIGHT = SCREEN_HEIGHT;
+static const int GRAPH_X = SCREEN_WIDTH + 100;
 static const int GRAPH_Y = 0;
 
 // Margin for graph drawing
@@ -75,7 +76,7 @@ void UpdateGraph(float displacement, float time)
         maxTime = time;
 }
 
-void DrawGraph(float displacement, float time, SimColor themeColor)
+void DrawGraph(float displacement, float time, SimColor *themeColor)
 {
     // All drawing is offset to start at (WIDTH+1, 0)
     int offsetX = GRAPH_X;
@@ -117,9 +118,9 @@ void DrawGraph(float displacement, float time, SimColor themeColor)
                 offsetY + GRAPH_HEIGHT - MARGIN - ((0.0f - minDisplacement) / displacementRange) * graphHeight;
 
             // Create a lighter version of theme color by blending with white
-            Color lighterTheme = { themeColor.r + (255 - themeColor.r) * 0.5f,
-                                   themeColor.g + (255 - themeColor.g) * 0.5f,
-                                   themeColor.b + (255 - themeColor.b) * 0.5f, themeColor.a };
+            Color lighterTheme = { themeColor->r + (255 - themeColor->r) * 0.5f,
+                                   themeColor->g + (255 - themeColor->g) * 0.5f,
+                                   themeColor->b + (255 - themeColor->b) * 0.5f, themeColor->a };
 
             DrawLineEx((Vector2){ offsetX + MARGIN, equilibriumY },
                        (Vector2){ offsetX + GRAPH_WIDTH - MARGIN, equilibriumY }, 2.0f, lighterTheme);
@@ -156,7 +157,7 @@ void DrawGraph(float displacement, float time, SimColor themeColor)
             float y2 = offsetY + GRAPH_HEIGHT - MARGIN -
                        ((dataPoints[i + 1].y - minDisplacement) / displacementRange) * graphHeight;
 
-            DrawLineEx((Vector2){ x1, y1 }, (Vector2){ x2, y2 }, 2.0f, SimColorToRayColor(themeColor));
+            DrawLineEx((Vector2){ x1, y1 }, (Vector2){ x2, y2 }, 2.0f, SimColorToRayColor(*themeColor));
         }
 
         // Draw current point
@@ -168,7 +169,7 @@ void DrawGraph(float displacement, float time, SimColor themeColor)
 
     // Draw current values
     DrawText(TextFormat("Current Displacement: %.2f", displacement), offsetX + GRAPH_WIDTH - 545, offsetY + MARGIN - 25,
-             15, SimColorToRayColor(themeColor));
+             15, SimColorToRayColor(*themeColor));
 
     // Draw min/max labels
     DrawText(TextFormat("%.2f", maxDisplacement), offsetX + 5, offsetY + MARGIN, 12, GRAY);

@@ -34,11 +34,11 @@ typedef struct SimColor
     unsigned char a;
 } SimColor;
 
-#define WIDTH 900  // Window width
-#define HEIGHT 600 // Window height
+#define SCREEN_WIDTH 900  // Window width
+#define SCREEN_HEIGHT 600 // Window height
 
-#define FLOOR_HEIGHT (HEIGHT * 0.8) // Floor height position
-#define FLOOR_THICKNESS 5           // Floor thickness
+#define FLOOR_HEIGHT (SCREEN_HEIGHT * 0.8) // Floor height position
+#define FLOOR_THICKNESS 5                  // Floor thickness
 
 #define RECT_SIZE 100 // Size of the rectangle representing the mass
 
@@ -46,10 +46,10 @@ typedef struct SimColor
 #define SPRING_SEGMENT_LENGTH (RECT_SIZE / 4) // Length of each spring segment
 #define SPRING_STOP_MARGIN 50                 // Margin to prevent spring from fully compressing or extending
 
-#define UI_SLIDER_WIDTH 260                        // Width of UI sliders
-#define UI_SLIDER_HEIGHT 20                        // Height of UI sliders
-#define UI_SLIDER_X (WIDTH - UI_SLIDER_WIDTH - 10) // X position of UI sliders
-#define UI_SLIDER_Y 20                             // Y position of first UI slider
+#define UI_SLIDER_WIDTH 260                               // Width of UI sliders
+#define UI_SLIDER_HEIGHT 20                               // Height of UI sliders
+#define UI_SLIDER_X (SCREEN_WIDTH - UI_SLIDER_WIDTH - 10) // X position of UI sliders
+#define UI_SLIDER_Y 20                                    // Y position of first UI slider
 
 #define SIM_LIGHTGRAY (SimColor){ 200, 200, 200, 255 } // Light Gray
 #define SIM_GRAY (SimColor){ 130, 130, 130, 255 }      // Gray

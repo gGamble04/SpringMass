@@ -7,6 +7,8 @@
 
 #include "renderer/renderer.h"
 #include "math.h"
+#include "platform_internal.h"
+#include <raylib.h>
 
 void InitRender(SpringMassRenderState *state, int windowWidth, int windowHeight, const char *title, int FPS)
 {
@@ -20,17 +22,16 @@ void InitRender(SpringMassRenderState *state, int windowWidth, int windowHeight,
 
     state->themeColor = SIM_BLUE;
 
-    state->springAnchorPoint =
-        (Vector2){ 0, state->massRectangle.y + RECT_SIZE / 2 }; // Fixed anchor point of the spring
+    state->springAnchorPoint = (Vec2D){ 0, state->massRectangle.y + RECT_SIZE / 2 }; // Fixed anchor point of the spring
     state->springAttachPoint =
-        (Vector2){ state->massRectangle.x,
-                   state->massRectangle.y + RECT_SIZE / 2 }; // Attachment point of the spring on the mass
-    state->numSpringSegments = SPRING_SEGMENTS;              // Number of segments in the spring
-    state->segmentLength = SPRING_SEGMENT_LENGTH;            // Length of each spring segment
+        (Vec2D){ state->massRectangle.x,
+                 state->massRectangle.y + RECT_SIZE / 2 }; // Attachment point of the spring on the mass
+    state->numSpringSegments = SPRING_SEGMENTS;            // Number of segments in the spring
+    state->segmentLength = SPRING_SEGMENT_LENGTH;          // Length of each spring segment
 
-    state->floorStart = (Vector2){ 0, FLOOR_HEIGHT };   // Start point of the floor line
-    state->floorEnd = (Vector2){ WIDTH, FLOOR_HEIGHT }; // End point of the floor line
-    state->floorThickness = FLOOR_THICKNESS;            // Thickness of the floor line
+    state->floorStart = (Vec2D){ 0, FLOOR_HEIGHT };          // Start point of the floor line
+    state->floorEnd = (Vec2D){ SCREEN_WIDTH, FLOOR_HEIGHT }; // End point of the floor line
+    state->floorThickness = FLOOR_THICKNESS;                 // Thickness of the floor line
 
     state->elapsedTime = 0.0f;
 }
@@ -42,22 +43,22 @@ void ShowStartupText(SpringMassRenderState *state)
     const char *text1 = "Welcome to the Spring-Mass Simulation!";
     int fontSize1 = 20;
     int textWidth1 = MeasureText(text1, fontSize1);
-    DrawText(text1, WIDTH / 2 - textWidth1 / 2, HEIGHT / 2 - 100, fontSize1, RAYWHITE);
+    DrawText(text1, SCREEN_WIDTH / 2 - textWidth1 / 2, SCREEN_HEIGHT / 2 - 100, fontSize1, RAYWHITE);
 
     const char *text2 = "Click and drag to move the mass";
     int fontSize2 = 15;
     int textWidth2 = MeasureText(text2, fontSize2);
-    DrawText(text2, WIDTH / 2 - textWidth2 / 2, HEIGHT / 2 - 80, fontSize2, RAYWHITE);
+    DrawText(text2, SCREEN_WIDTH / 2 - textWidth2 / 2, SCREEN_HEIGHT / 2 - 80, fontSize2, RAYWHITE);
 
     const char *text3 = "Edit parameters with sliders in top right (or in settings)";
     int fontSize3 = 15;
     int textWidth3 = MeasureText(text3, fontSize3);
-    DrawText(text3, WIDTH / 2 - textWidth3 / 2, HEIGHT / 2 - 60, fontSize3, RAYWHITE);
+    DrawText(text3, SCREEN_WIDTH / 2 - textWidth3 / 2, SCREEN_HEIGHT / 2 - 60, fontSize3, RAYWHITE);
 
     const char *text4 = "ESC to pause";
     int fontSize4 = 15;
     int textWidth4 = MeasureText(text4, fontSize4);
-    DrawText(text4, WIDTH / 2 - textWidth4 / 2, HEIGHT / 2 - 40, fontSize4, RAYWHITE);
+    DrawText(text4, SCREEN_WIDTH / 2 - textWidth4 / 2, SCREEN_HEIGHT / 2 - 40, fontSize4, RAYWHITE);
 }
 
 void ShowStartupTextFadeOut(SpringMassRenderState *state, float dt, float fadeTime)
@@ -76,43 +77,47 @@ void ShowStartupTextFadeOut(SpringMassRenderState *state, float dt, float fadeTi
     const char *text1 = "Welcome to the Spring-Mass Simulation!";
     int fontSize1 = 20;
     int textWidth1 = MeasureText(text1, fontSize1);
-    DrawText(text1, WIDTH / 2 - textWidth1 / 2, HEIGHT / 2 - 100, fontSize1, (Color){ 245, 245, 245, alpha });
+    DrawText(text1, SCREEN_WIDTH / 2 - textWidth1 / 2, SCREEN_HEIGHT / 2 - 100, fontSize1,
+             (Color){ 245, 245, 245, alpha });
 
     const char *text2 = "Click and drag to move the mass";
     int fontSize2 = 15;
     int textWidth2 = MeasureText(text2, fontSize2);
-    DrawText(text2, WIDTH / 2 - textWidth2 / 2, HEIGHT / 2 - 80, fontSize2, (Color){ 245, 245, 245, alpha });
+    DrawText(text2, SCREEN_WIDTH / 2 - textWidth2 / 2, SCREEN_HEIGHT / 2 - 80, fontSize2,
+             (Color){ 245, 245, 245, alpha });
 
     const char *text3 = "Edit parameters with sliders in top right (or in settings)";
     int fontSize3 = 15;
     int textWidth3 = MeasureText(text3, fontSize3);
-    DrawText(text3, WIDTH / 2 - textWidth3 / 2, HEIGHT / 2 - 60, fontSize3, (Color){ 245, 245, 245, alpha });
+    DrawText(text3, SCREEN_WIDTH / 2 - textWidth3 / 2, SCREEN_HEIGHT / 2 - 60, fontSize3,
+             (Color){ 245, 245, 245, alpha });
 
     const char *text4 = "ESC to pause";
     int fontSize4 = 15;
     int textWidth4 = MeasureText(text4, fontSize4);
-    DrawText(text4, WIDTH / 2 - textWidth4 / 2, HEIGHT / 2 - 40, fontSize4, (Color){ 245, 245, 245, alpha });
+    DrawText(text4, SCREEN_WIDTH / 2 - textWidth4 / 2, SCREEN_HEIGHT / 2 - 40, fontSize4,
+             (Color){ 245, 245, 245, alpha });
 }
 
-void DrawFloor(SpringMassRenderState state)
+void DrawFloor(SpringMassRenderState *state)
 {
-    DrawLineEx(state.floorStart, state.floorEnd, state.floorThickness, GRAY); // Draw the floor line
+    DrawLineEx(SimVectoRayVec(state->floorStart), SimVectoRayVec(state->floorEnd), state->floorThickness,
+               GRAY); // Draw the floor line
 }
 
-void DrawMass(SpringMassRenderState state)
+void DrawMass(SpringMassRenderState *state)
 {
-    DrawRectangleRec(SimRectToRayRect(state.massRectangle),
-                     SimColorToRayColor(state.massColor)); // Draw the mass rectangle
+    DrawRectangleRec(SimRectToRayRect(state->massRectangle),
+                     SimColorToRayColor(state->massColor)); // Draw the mass rectangle
 }
 
-void DrawSpring(SpringMassRenderState state)
+void DrawSpring(SpringMassRenderState *state)
 {
-    Vector2 anchor = state.springAnchorPoint;
-    Vector2 attach = state.springAttachPoint;
+    Vector2 anchor = SimVectoRayVec(state->springAnchorPoint);
+    Vector2 attach = SimVectoRayVec(state->springAttachPoint);
 
-    int numSegments = state.numSpringSegments;
-    float segmentLength = state.segmentLength;
-
+    int numSegments = state->numSpringSegments;
+    float segmentLength = state->segmentLength;
     if (numSegments < 1)
         return;                                    // No segments to draw
     Vector2 deltaSpring = vec2Sub(attach, anchor); // Vector from anchor to attach point
@@ -167,7 +172,7 @@ void DrawSpring(SpringMassRenderState state)
     }
 }
 
-void DrawRender(SpringMassRenderState state)
+void DrawRender(SpringMassRenderState *state)
 {
     DrawFloor(state);
     DrawMass(state);
@@ -176,18 +181,18 @@ void DrawRender(SpringMassRenderState state)
 
 void UpdateRender(SpringMassRenderState *state)
 {
-    DrawFloor(*state);
+    DrawFloor(state);
     state->springAttachPoint.x = state->massRectangle.x;
-    DrawMass(*state);
-    DrawSpring(*state);
+    DrawMass(state);
+    DrawSpring(state);
 }
 
-void Render_BeginDrawing()
+void Render_BeginDrawing(void)
 {
     BeginDrawing();
 }
 
-void Render_EndDrawing()
+void Render_EndDrawing(void)
 {
     EndDrawing();
 }
@@ -197,7 +202,7 @@ void Render_ClearBackground(SimColor color)
     ClearBackground(SimColorToRayColor(color));
 }
 
-float Render_GetFrameTime()
+float Render_GetFrameTime(void)
 {
     return GetFrameTime();
 }

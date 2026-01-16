@@ -5,14 +5,14 @@
  * @date 1-9-2026                                            *
  *************************************************************/
 
-#include "core/consts.h"
+#include "consts.h"
 #include "sim.h"
 
-int main()
+int main(void)
 {
     // Initialization
     SimState sim;
-    InitSim(&sim, WIDTH, HEIGHT, "Spring-Mass System", 120);
+    InitSim(&sim, SCREEN_WIDTH, SCREEN_HEIGHT, "Spring-Mass System", 120);
 
     float elapsedTime = 0.0f; // Track total simulation time
     // float becomes imprecise after ~4.5 hours, so this is safe.

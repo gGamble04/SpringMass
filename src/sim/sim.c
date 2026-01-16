@@ -6,8 +6,8 @@
  ***************************************************************/
 
 #include "sim.h"
-#include "../core/consts.h"
 #include "UI/ui.h"
+#include "consts.h"
 #include "renderer/graph.h"
 
 /**********************************
@@ -61,7 +61,7 @@ void DrawSim(SimState *sim, float dt, float time)
 {
     Render_BeginDrawing();
     Render_ClearBackground(SIM_BLACK); // Clear last frame
-    DrawGraph(sim->systemState.x - sim->systemState.equilibrium, time, sim->renderState.themeColor);
+    DrawGraph(sim->systemState.x - sim->systemState.equilibrium, time, &sim->renderState.themeColor);
     ShowUI(sim);                     // Draw UI
     UpdateRender(&sim->renderState); // Update render state based on system state
 
@@ -113,7 +113,7 @@ void DrawSim(SimState *sim, float dt, float time)
     Render_EndDrawing();
 }
 
-float CurrentFrameTime()
+float CurrentFrameTime(void)
 {
     return Render_GetFrameTime();
 }
@@ -123,7 +123,7 @@ bool SimRunning(const SimState *sim)
     return ExitButtonClicked() && sim->isRunning;
 }
 
-void StopSim()
+void StopSim(void)
 {
     DestroyRenderer();
 }
@@ -136,7 +136,7 @@ static bool SimHandleDragging(SimState *sim)
 {
     if (!sim->isDragging)
     {
-        if (LeftMouseButtonPressed() && ClickInBoundingBox(sim->renderState.massRectangle))
+        if (LeftMouseButtonPressed() && ClickInBoundingBox(&sim->renderState.massRectangle))
         {
             Vec2D mousePosition = GetMousePOS();
             sim->isDragging = true;
@@ -176,8 +176,8 @@ static void SimResolveBounds(SimState *sim)
 
 static void ShowUI(SimState *sim)
 {
-    SetThemeColor(sim->renderState.themeColor);
+    SetThemeColor(&sim->renderState.themeColor);
     MakeVariableSliders(&sim->systemState);
     ShowDamping(sim->systemState.damping, sim->systemState.springConst, sim->systemState.mass,
-                sim->renderState.themeColor);
+                &sim->renderState.themeColor);
 }
