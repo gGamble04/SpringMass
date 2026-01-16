@@ -14,7 +14,7 @@
 
 // Function declarations
 void SetThemeColor(SimColor themeColor);                          // Set theme color for UI elements
-void DrawVariableSliders(SpringMassSystemState *systemState);     // Draw parameter adjustment sliders
+void MakeVariableSliders(SpringMassSystemState *systemState);     // Draw parameter adjustment sliders
 void ShowDamping(float c, float k, float m, SimColor themeColor); // Display damping type based on parameters
 int ShowPauseDialog(); // Show pause dialog (returns: 1=Resume, 2=Settings, 3=Exit, -1=None)
 int ShowSettings();    // Show settings dialog (returns: 2=Change Theme, -1=None)
@@ -26,5 +26,6 @@ Vec2D GetMousePOS();                                // Get current mouse positio
 bool LeftMouseButtonPressed();                      // Check if left mouse button pressed
 bool LeftMouseButtonReleased();                     // Check if left mouse button released
 bool LeftMouseButtonDown();                         // Check if left mouse button currently down
+bool ClickInBoundingBox(SimRect boundingBox);       // Check if mouse click is within bounding box
 
 #endif

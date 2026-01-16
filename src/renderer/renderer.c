@@ -14,9 +14,9 @@ void InitRender(SpringMassRenderState *state, int windowWidth, int windowHeight,
     SetTargetFPS(FPS);
     SetExitKey(KEY_NULL);
 
-    state->massRectangle = (Rectangle){ 150, FLOOR_HEIGHT - RECT_SIZE - FLOOR_THICKNESS / 2, RECT_SIZE,
-                                        RECT_SIZE }; // Initial position of the mass
-    state->massColor = RED;                          // Color of the mass rectangle
+    state->massRectangle = (SimRect){ 150, FLOOR_HEIGHT - RECT_SIZE - FLOOR_THICKNESS / 2, RECT_SIZE,
+                                      RECT_SIZE }; // Initial position of the mass
+    state->massColor = SIM_RED;                    // Color of the mass rectangle
 
     state->themeColor = SIM_BLUE;
 
@@ -101,7 +101,8 @@ void DrawFloor(SpringMassRenderState state)
 
 void DrawMass(SpringMassRenderState state)
 {
-    DrawRectangleRec(state.massRectangle, state.massColor); // Draw the mass rectangle
+    DrawRectangleRec(SimRectToRayRect(state.massRectangle),
+                     SimColorToRayColor(state.massColor)); // Draw the mass rectangle
 }
 
 void DrawSpring(SpringMassRenderState state)

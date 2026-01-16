@@ -50,7 +50,7 @@ void SetThemeColor(SimColor themeColor)
 // TODO:
 // only move sliders if click happeded inside bouding box
 // if user is dragging mass and hovers over sliders, sliders will also move
-void DrawVariableSliders(SpringMassSystemState *systemState)
+void MakeVariableSliders(SpringMassSystemState *systemState)
 {
     // Slider ranges
     const float k_min = 0.0f;
@@ -343,6 +343,19 @@ bool LeftMouseButtonDown()
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
     {
         return true;
+    }
+    return false;
+}
+
+bool ClickInBoundingBox(SimRect boundingBox)
+{
+    Vector2 mousePosition = GetMousePosition();
+    if (mousePosition.x >= boundingBox.x && mousePosition.x <= boundingBox.x + boundingBox.width)
+    {
+        if (mousePosition.y >= boundingBox.y && mousePosition.y <= boundingBox.y + boundingBox.height)
+        {
+            return true;
+        }
     }
     return false;
 }

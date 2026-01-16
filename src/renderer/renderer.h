@@ -14,6 +14,11 @@
 #include <stdio.h>
 
 // Utility functions
+static inline Rectangle SimRectToRayRect(SimRect rect) // Convert SimColor to Raylib Color
+{
+    return (Rectangle){ rect.x, rect.y, rect.width, rect.height };
+}
+
 static inline Color SimColorToRayColor(SimColor color) // Convert SimColor to Raylib Color
 {
     return (Color){ color.r, color.g, color.b, color.a };
@@ -47,8 +52,8 @@ static inline double vec2Length(Vector2 v) // Compute length of a Vector2
 // Rendering state for the spring-mass system
 typedef struct SpringMassRenderState
 {
-    Rectangle massRectangle; // Position and size of the mass rectangle
-    Color massColor;         // Color of the mass rectangle
+    SimRect massRectangle; // Position and size of the mass rectangle
+    SimColor massColor;    // Color of the mass rectangle
 
     SimColor themeColor; // Theme color used for rendering
 

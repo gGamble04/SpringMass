@@ -14,8 +14,7 @@
  *      Forward Declarations      *
  **********************************/
 
-static bool ClickInBoundingBox(Rectangle box); // Check if mouse click is in bounding box
-static bool SimHandleDragging(SimState *sim);  // Handle dragging logic; returns true if dragging is occurring
+static bool SimHandleDragging(SimState *sim); // Handle dragging logic; returns true if dragging is occurring
 static void SimResolveBounds(
     SimState *sim); // Ensure the mass stays within bounds defined by the spring's anchor and max extension
 static void ShowUI(SimState *sim); // Draw the UI elements
@@ -133,19 +132,6 @@ void StopSim()
  *      Internal helper functions      *
  ***************************************/
 
-static bool ClickInBoundingBox(Rectangle box)
-{
-    Vec2D mousePosition = GetMousePOS();
-    if (mousePosition.x >= box.x && mousePosition.x <= box.x + box.width)
-    {
-        if (mousePosition.y >= box.y && mousePosition.y <= box.y + box.height)
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
 static bool SimHandleDragging(SimState *sim)
 {
     if (!sim->isDragging)
@@ -191,7 +177,7 @@ static void SimResolveBounds(SimState *sim)
 static void ShowUI(SimState *sim)
 {
     SetThemeColor(sim->renderState.themeColor);
-    DrawVariableSliders(&sim->systemState);
+    MakeVariableSliders(&sim->systemState);
     ShowDamping(sim->systemState.damping, sim->systemState.springConst, sim->systemState.mass,
                 sim->renderState.themeColor);
 }

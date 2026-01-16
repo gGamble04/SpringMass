@@ -18,6 +18,14 @@ typedef struct Vec2D
     float y;
 } Vec2D;
 
+typedef struct SimRect
+{
+    int x;
+    int y;
+    int width;
+    int height;
+} SimRect;
+
 typedef struct SimColor
 {
     unsigned char r;
