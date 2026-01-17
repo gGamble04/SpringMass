@@ -2,3 +2,8 @@ BasedOnStyle: Microsoft
 
 # Spacing inside braces
 Cpp11BracedListStyle: false  # Adds spaces: { x, y } instead of {x, y}
+
+# Switch statement formatting
+BreakBeforeBraces: Allman  # Put opening brace on new line for all blocks
+AllowShortCaseLabelsOnASingleLine: false
+IndentCaseLabels: true  # Indent case labels one level from switch

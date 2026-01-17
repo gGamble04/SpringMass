@@ -29,10 +29,12 @@ void InitSim(SimState *sim, int windowWidth, int windowHeight, const char *title
     InitRender(&sim->renderState, windowWidth, windowHeight, title, FPS);
     InitGraph();
     sim->isRunning = true;
-    sim->isPaused = false;
+    // sim->isPaused = false;
     sim->pausedTime = 0.0f;
-    sim->showSettings = false;
-    sim->showThemeChange = false;
+    // sim->showSettings = false;
+    // sim->showThemeChange = false;
+    // sim->simShowPararms = false;
+    sim->dialog = NONE;
     sim->isDragging = false;
     sim->dragGrabOffsetX = 0.0f;
 }
@@ -42,11 +44,12 @@ void UpdateSim(SimState *sim, float dt, float time)
     if (EscKeyPressed())
     {
         // Toggle pause on ESC key
-        sim->isPaused = !sim->isPaused;
+        // sim->isPaused = !sim->isPaused;
+        sim->dialog = (sim->dialog == NONE) ? PAUSE : NONE;
     }
-    if (!sim->isPaused && !sim->showSettings && !sim->showThemeChange)
+    if (sim->dialog == NONE)
     {
-        // Only update physics when not paused or in a dialog
+        // Only update physics when in a dialog
         if (!SimHandleDragging(sim))
         {
             SpringmassStep(&sim->systemState, dt);
@@ -74,42 +77,46 @@ void DrawSim(SimState *sim, float dt, float time)
     else if (textPersistTime < time && time <= textPersistTime + fadeTime)
     {
         // Only update fade-out animation when not paused
-        ShowStartupTextFadeOut(&sim->renderState, sim->isPaused ? 0.0f : dt, fadeTime);
+        ShowStartupTextFadeOut(&sim->renderState, sim->dialog != NONE ? 0.0f : dt, fadeTime);
     }
 
     // Logic for handling dialogs
-    if (sim->isPaused)
+    switch (sim->dialog)
     {
-        switch (ShowPauseDialog())
-        {
-        case 1: // Resume
-            sim->isPaused = false;
-            sim->showSettings = false;
-            sim->showThemeChange = false;
+        case PAUSE:
+            switch (ShowPauseDialog())
+            {
+                case 1:
+                    sim->dialog = NONE;
+                    break;
+                case 2:
+                    sim->dialog = SETTINGS;
+                    break;
+                case 3:
+                    sim->dialog = NONE;
+                    sim->isRunning = false;
+            }
             break;
-        case 2: // Open Settings
-            sim->showSettings = true;
-            sim->isPaused = false; // Ensure that pause and settings dialog aren't trying to draw in the same frame
+        case SETTINGS:
+            switch (ShowSettings())
+            {
+                case 1:
+                    sim->dialog = EDIT_PARAMS;
+                    break;
+                case 2:
+                    sim->dialog = CHANGE_THEME;
+                    break;
+            }
             break;
-        case 3: // Exit
-            sim->isRunning = false;
+        case EDIT_PARAMS:
+            ShowParamEdit();
             break;
-        }
-    }
-    else if (sim->showSettings)
-    {
-        switch (ShowSettings())
-        {
-        case 2:
-            sim->showThemeChange = true;
-            sim->showSettings = false;
-        }
-    }
-    else if (sim->showThemeChange)
-    {
-        ShowThemeChange(&sim->renderState);
+        case CHANGE_THEME:
+            ShowThemeChange(&sim->renderState);
+            break;
     }
     // End of dialog handling logic
+
     Render_EndDrawing();
 }
 

@@ -12,6 +12,15 @@
 #include "renderer/renderer.h"
 #include <stdbool.h>
 
+typedef enum Dialog
+{
+    NONE,
+    PAUSE,
+    SETTINGS,
+    EDIT_PARAMS,
+    CHANGE_THEME
+} Dialog;
+
 // Overall simulation state
 typedef struct SimState
 {
@@ -20,11 +29,9 @@ typedef struct SimState
 
     bool isRunning; // Simulation is currently running
 
-    bool isPaused;    // Simulation is currently paused
     float pausedTime; // Time when paused (used to freeze graph)
 
-    bool showSettings;    // Settings dialog is shown
-    bool showThemeChange; // Theme change dialog is shown
+    Dialog dialog; // Current active dialog
 
     bool isDragging;       // Mass is currently being dragged
     float dragGrabOffsetX; // Horizontal offset from grab point during drag

@@ -22,9 +22,9 @@ int main(void)
     while (SimRunning(&sim))
     {
         float dt = CurrentFrameTime(); // Time step: delta time between frames
-        if (!sim.isPaused && !sim.showSettings && !sim.showThemeChange)
+        if (sim.dialog == NONE)
         {
-            elapsedTime += dt; // Only update total elapsed time if not paused or in some menu
+            elapsedTime += dt; // Only update total elapsed time if not in dialog
         }
         UpdateSim(&sim, dt, elapsedTime);
         DrawSim(&sim, dt, elapsedTime);

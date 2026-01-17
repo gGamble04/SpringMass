@@ -201,7 +201,7 @@ int ShowSettings(void)
     Rectangle parametersButtonBounds = { buttonX, y + dialogHeight * i / (numButtons + 1), buttonWidth, buttonHeight };
     if (GuiButton(parametersButtonBounds, "Change Parameter Values"))
     {
-        // TODO: Implement..
+        return 1;
     }
     i++;
 
@@ -295,6 +295,29 @@ void ShowThemeChange(SpringMassRenderState *state)
         SetThemeColor(&customSimColor);
         state->themeColor = RayColorToSimColor(customColor);
     }
+}
+
+void ShowParamEdit()
+{
+    float screenWidth = GetScreenWidth();
+    float screenHeight = GetScreenHeight();
+
+    float dialogWidth = screenWidth / 2;
+    float dialogHeight = screenHeight / 2;
+
+    float x = (screenWidth / 2) - (dialogWidth / 2);
+    float y = (screenHeight / 2) - (dialogHeight / 2);
+
+    Rectangle dialogBounds = { x, y, dialogWidth, dialogHeight };
+
+    DrawRectangleRec(dialogBounds, BLACK);
+    GuiGroupBox(dialogBounds, NULL);
+
+    const char *text = "Edit Parameters";
+    int fontSize = 20;
+    int textWidth = MeasureText(text, fontSize);
+
+    DrawText(text, x + (dialogWidth / 2) - (textWidth / 2), y + 10, fontSize, GRAY);
 }
 
 bool EscKeyPressed(void)
