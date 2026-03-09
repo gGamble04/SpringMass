@@ -192,7 +192,7 @@ int ShowSettings(void)
     DrawText(text, x + (dialogWidth / 2) - (textWidth / 2), y + 10, fontSize, GRAY);
 
     // Add buttons inside the group box
-    int numButtons = 2; // UPDATE if button is added, need a fix for this
+    int numButtons = 2; // TODO: update if button is added // FIX: need a fix for this
     float buttonWidth = 150;
     float buttonHeight = 40;
     float buttonX = x + (dialogWidth - buttonWidth) / 2;
