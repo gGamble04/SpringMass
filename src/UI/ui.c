@@ -214,8 +214,8 @@ int ShowSettings(void)
 }
 
 // FIXME: I dont like these globals..
-bool showColorPanel = false;
-bool showColorScroll = true;
+static bool showColorPanel = false;
+static bool showColorScroll = true;
 void ShowThemeChange(SpringMassRenderState *state)
 {
     float screenWidth = GetScreenWidth();
@@ -256,10 +256,10 @@ void ShowThemeChange(SpringMassRenderState *state)
                                       SIM_PINK,       SIM_YELLOW,    SIM_GREEN,  SIM_SKYBLUE,   SIM_PURPLE,
                                       SIM_BEIGE };
 
-    static const char *colorNames[] = { "DARKGRAY",  "MAROON", "ORANGE",    "DARKGREEN", "DARKBLUE", "DARKPURPLE",
-                                        "DARKBROWN", "GRAY",   "RED",       "GOLD",      "LIME",     "BLUE",
-                                        "VIOLET",    "BROWN",  "LIGHTGRAY", "PINK",      "YELLOW",   "GREEN",
-                                        "SKYBLUE",   "PURPLE", "BEIGE" };
+    static const char *colorNames[] = { "Dark Gray",  "Maroon", "Orange",     "Dark Green", "Dark Blue", "Dark Purple",
+                                        "Dark Brown", "Gray",   "Red",        "Gold",       "Lime",      "Blue",
+                                        "Violet",     "Brown",  "Light Gray", "Pink",       "Yellow",    "Green",
+                                        "Sky Blue",   "Purple", "Beige" };
 
     Rectangle colorsListBounds = { buttonX, y + dialogHeight * i / (numButtons + 1), buttonWidth, buttonHeight * 3 };
     if (showColorScroll)

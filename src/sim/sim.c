@@ -114,6 +114,8 @@ void DrawSim(SimState *sim, float dt, float time)
         case CHANGE_THEME:
             ShowThemeChange(&sim->renderState);
             break;
+        case NONE:
+            break;
     }
     // End of dialog handling logic
 
